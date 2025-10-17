@@ -11,7 +11,6 @@ This repository includes GitHub Actions workflows for continuous integration and
 - ✅ Node.js compilation check
 - ✅ ESLint code quality
 - ✅ Prettier formatting check
-- ✅ Unit tests
 - ✅ Server health check
 
 **Node.js Versions:** 18.x, 20.x
@@ -23,7 +22,6 @@ This repository includes GitHub Actions workflows for continuous integration and
 - ✅ React Native bundle compilation
 - ✅ ESLint code quality
 - ✅ Prettier formatting check
-- ✅ Jest unit tests
 - ✅ TypeScript check (if configured)
 
 **Node.js Versions:** 18.x, 20.x

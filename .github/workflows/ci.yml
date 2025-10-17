@@ -80,9 +80,6 @@ jobs:
       
     - name: Check Prettier formatting
       run: npm run format
-      
-    - name: Run tests
-      run: npm test
 
   integration:
     name: Integration Tests

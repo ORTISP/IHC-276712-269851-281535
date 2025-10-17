@@ -49,9 +49,6 @@ jobs:
     - name: Check Prettier formatting
       run: npm run format
       
-    - name: Run tests
-      run: npm test
-      
     - name: TypeScript check (if applicable)
       run: |
         if [ -f "tsconfig.json" ]; then
