@@ -1,0 +1,10 @@
+node_modules/
+*.log
+.env
+dist/
+build/
+coverage/
+ios/
+android/
+.expo/
+*.jsbundle
