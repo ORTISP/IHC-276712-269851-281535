@@ -1,56 +1,73 @@
-# React Native Mobile App
+# Frontend - Android React Native App
 
-This is the React Native frontend for the mobile application.
+This is a React Native Android application with navigation between Welcome and Login screens.
 
-## Prerequisites
+## Features
 
-Before running the project, make sure you have the following installed:
-- Node.js (>=16)
-- React Native CLI
-- Android Studio (for Android development)
-- Xcode (for iOS development, macOS only)
+- **Welcome Screen** - Clean welcome screen with "Get Started" and "Login" buttons
+- **Login Screen** - Professional login form with email/password fields
+- **Navigation** - Smooth navigation between screens using React Navigation
+- **Android Only** - Optimized for Android development
 
-## Setup
+## Getting Started
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Prerequisites
 
-2. For iOS (macOS only):
-   ```bash
-   cd ios && pod install && cd ..
-   ```
+- Android Studio installed
+- Android SDK configured
+- Java 17+ installed
+- An Android emulator or physical device connected
 
-## Running the App
+### Step 1: Install Dependencies
 
-### Android
 ```bash
-npm run android
+npm install
 ```
 
-### iOS (macOS only)
-```bash
-npm run ios
-```
+### Step 2: Start the Metro Server
 
-### Development Server
 ```bash
 npm start
 ```
 
+### Step 3: Run the Android App
+
+In a new terminal:
+
+```bash
+npm run android
+```
+
 ## Project Structure
 
-- `src/components/` - Reusable React components
-- `src/screens/` - Screen components
-- `src/navigation/` - Navigation configuration
-- `src/services/` - API services and external integrations
-- `src/utils/` - Utility functions and helpers
+```
+src/
+├── screens/
+│   ├── WelcomeScreen.js    # Welcome screen with navigation
+│   └── LoginScreen.js      # Login form screen
+└── navigation/
+    └── AppNavigator.js     # Navigation setup
+```
 
 ## Available Scripts
 
-- `npm run android` - Run on Android device/emulator
-- `npm run ios` - Run on iOS device/simulator
 - `npm start` - Start Metro bundler
-- `npm test` - Run tests
+- `npm run android` - Run Android app
+- `npm run clean` - Clean Android build
+- `npm run build` - Build Android APK
 - `npm run lint` - Run ESLint
+- `npm test` - Run tests
+
+## Development
+
+The app uses React Navigation for screen navigation. To add new screens:
+
+1. Create a new screen component in `src/screens/`
+2. Add it to the navigator in `src/navigation/AppNavigator.js`
+3. Navigate to it using `navigation.navigate('ScreenName')`
+
+## Troubleshooting
+
+- Make sure Android emulator is running or device is connected
+- Check that Android SDK is properly configured
+- Run `npm run clean` if you encounter build issues
