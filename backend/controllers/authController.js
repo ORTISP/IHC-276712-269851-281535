@@ -6,49 +6,51 @@ const authController = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      
+
       // Validate login data using validation layer
-      const validationResult = validation.validateUserLogin({ email, password });
-      
+      const validationResult = validation.validateUserLogin({
+        email,
+        password,
+      });
+
       if (!validationResult.isValid) {
         return res.status(400).json({
           success: false,
           error: 'Validation failed',
-          details: validationResult.errors
+          details: validationResult.errors,
         });
       }
-      
+
       // TODO: Add actual authentication logic here
       // - Validate user credentials against database
       // - Check if user exists and password is correct
       // - Use passwordUtils.verifyPassword(password, storedHash, storedSalt)
       // - Generate JWT token
       // - Return user data and token
-      
+
       // Placeholder response
       const user = {
         id: 'user-id-placeholder',
         email: validationResult.sanitizedData.email,
         name: 'User Name',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      
+
       const token = 'jwt-token-placeholder';
-      
+
       res.json({
         success: true,
         message: 'Login successful',
         data: {
           user,
-          token
-        }
+          token,
+        },
       });
-      
     } catch (error) {
       console.error('Login error:', error);
       res.status(500).json({
         success: false,
-        error: 'Internal server error during login'
+        error: 'Internal server error during login',
       });
     }
   },
@@ -57,41 +59,41 @@ const authController = {
   register: async (req, res) => {
     try {
       const { email, password, name, dateOfBirth, gender } = req.body;
-      
+
       // Validate registration data using validation layer
       const validationResult = validation.validateUserRegistration({
         email,
         password,
         name,
         dateOfBirth: dateOfBirth || '1990-01-01', // Default if not provided
-        gender: gender || 'prefer-not-to-say' // Default if not provided
+        gender: gender || 'prefer-not-to-say', // Default if not provided
       });
-      
+
       if (!validationResult.isValid) {
         return res.status(400).json({
           success: false,
           error: 'Validation failed',
-          details: validationResult.errors
+          details: validationResult.errors,
         });
       }
-      
+
       // Check password strength
       const passwordStrength = passwordUtils.checkPasswordStrength(password);
       if (passwordStrength.strength === 'weak') {
         return res.status(400).json({
           success: false,
           error: 'Password is too weak',
-          details: passwordStrength.feedback
+          details: passwordStrength.feedback,
         });
       }
-      
+
       // TODO: Add actual registration logic here
       // - Check if user already exists
       // - Hash password using passwordUtils.hashPasswordWithSalt(password)
       // - Save user to database
       // - Generate JWT token
       // - Return user data and token
-      
+
       // Placeholder response
       const user = {
         id: 'new-user-id-placeholder',
@@ -99,26 +101,25 @@ const authController = {
         name: validationResult.sanitizedData.name,
         dateOfBirth: validationResult.sanitizedData.dateOfBirth,
         gender: validationResult.sanitizedData.gender,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      
+
       const token = 'jwt-token-placeholder';
-      
+
       res.status(201).json({
         success: true,
         message: 'User registered successfully',
         data: {
           user,
           token,
-          passwordStrength: passwordStrength.strength
-        }
+          passwordStrength: passwordStrength.strength,
+        },
       });
-      
     } catch (error) {
       console.error('Registration error:', error);
       res.status(500).json({
         success: false,
-        error: 'Internal server error during registration'
+        error: 'Internal server error during registration',
       });
     }
   },
@@ -129,17 +130,16 @@ const authController = {
       // TODO: Add actual logout logic here
       // - Invalidate JWT token
       // - Clear any server-side sessions
-      
+
       res.json({
         success: true,
-        message: 'Logout successful'
+        message: 'Logout successful',
       });
-      
     } catch (error) {
       console.error('Logout error:', error);
       res.status(500).json({
         success: false,
-        error: 'Internal server error during logout'
+        error: 'Internal server error during logout',
       });
     }
   },
@@ -150,30 +150,28 @@ const authController = {
       // TODO: Add actual profile logic here
       // - Verify JWT token
       // - Get user data from database
-      
+
       const user = {
         id: 'user-id',
         email: 'user@example.com',
         name: 'User Name',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      
+
       res.json({
         success: true,
         data: {
-          user
-        }
+          user,
+        },
       });
-      
     } catch (error) {
       console.error('Get profile error:', error);
       res.status(500).json({
         success: false,
-        error: 'Internal server error while fetching profile'
+        error: 'Internal server error while fetching profile',
       });
     }
-  }
+  },
 };
-
 
 module.exports = authController;
