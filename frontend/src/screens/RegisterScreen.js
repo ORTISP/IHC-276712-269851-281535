@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { theme } from '../styles/theme';
 import Button from '../components/shared/Button';
 import Input from '../components/shared/Input';
@@ -54,19 +48,19 @@ const RegisterScreen = ({ navigation }) => {
       // Only send email and password - other fields will be added later
       const registrationData = {
         email: email.trim().toLowerCase(),
-        password
+        password,
       };
 
       const response = await AuthService.register(registrationData);
-      
+
       if (response.success) {
         showToast('Account created successfully!', 'success');
-        
+
         // Clear form
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-        
+
         // Navigate to login screen after a short delay
         setTimeout(() => {
           navigation.navigate('Login');
@@ -76,7 +70,7 @@ const RegisterScreen = ({ navigation }) => {
       }
     } catch (error) {
       console.error('Registration error:', error);
-      
+
       if (error.message.includes('Validation failed')) {
         showToast('Please check your email format');
       } else if (error.message.includes('Password is too weak')) {
@@ -98,12 +92,12 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
-      
+
       <View style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
-          <Button 
-            title="← Back" 
+          <Button
+            title="← Back"
             onPress={handleBackToLogin}
             variant="secondary"
             size="sm"
@@ -145,8 +139,8 @@ const RegisterScreen = ({ navigation }) => {
             autoCorrect={false}
           />
 
-          <Button 
-            title={isLoading ? "Creating Account..." : "Create Account"} 
+          <Button
+            title={isLoading ? 'Creating Account...' : 'Create Account'}
             onPress={handleRegister}
             variant="primary"
             size="lg"
@@ -154,8 +148,8 @@ const RegisterScreen = ({ navigation }) => {
             disabled={isLoading}
           />
 
-          <Button 
-            title="Already have an account? Login" 
+          <Button
+            title="Already have an account? Login"
             onPress={() => navigation.navigate('Login')}
             variant="secondary"
             size="md"
