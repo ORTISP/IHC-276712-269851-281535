@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { theme, createButtonStyle, createTextStyle } from '../styles/theme';
+import { theme, createButtonStyle, createTextStyle } from '../../styles/theme';
 
 const Button = ({ 
   title, 
@@ -18,7 +18,6 @@ const Button = ({
     style,
   ];
 
-  const textColor = variant === 'primary' ? 'white' : 'primary';
   const textStyleCombined = [
     createTextStyle('body'),
     { color: variant === 'primary' ? theme.colors.white : theme.colors.primary },

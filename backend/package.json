@@ -12,7 +12,11 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write ."
   },
-  "keywords": ["nodejs", "api", "backend"],
+  "keywords": [
+    "nodejs",
+    "api",
+    "backend"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

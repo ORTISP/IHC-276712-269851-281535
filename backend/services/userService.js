@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { User } = require('../models');
-const validation = require('./validation');
+const validation = require('../businessLogic/UserLogic');
 
 const userService = {
   // Create a new user
@@ -8,20 +8,28 @@ const userService = {
     try {
       // Validate input data
       const validationResult = validation.validateUserRegistration(userData);
+
       if (!validationResult.isValid) {
-        throw new Error(`Validation failed: ${validationResult.errors.join(', ')}`);
+        throw new Error(
+          `Validation failed: ${validationResult.errors.join(', ')}`
+        );
       }
 
       // Check if user already exists
       const existingUser = await userService.findUserByEmail(userData.email);
+
       if (existingUser) {
         throw new Error('User with this email already exists');
       }
 
       // Check password strength
-      const passwordStrength = require('../utils/password').checkPasswordStrength(userData.password);
+      const passwordStrength =
+        require('../utils/password').checkPasswordStrength(userData.password);
+
       if (passwordStrength.strength === 'weak') {
-        throw new Error(`Password is too weak: ${passwordStrength.feedback.join(', ')}`);
+        throw new Error(
+          `Password is too weak: ${passwordStrength.feedback.join(', ')}`
+        );
       }
 
       // Hash password
@@ -29,87 +37,87 @@ const userService = {
       const passwordSalt = await bcrypt.genSalt(saltRounds);
       const passwordHash = await bcrypt.hash(userData.password, passwordSalt);
 
-      // Create user
-      const user = await User.create({
-        name: validationResult.sanitizedData.name,
+      // Create user with only provided fields (email and password required)
+      const userDataToCreate = {
         email: validationResult.sanitizedData.email.toLowerCase().trim(),
         password_hash: passwordHash,
         password_salt: passwordSalt,
-        date_of_birth: validationResult.sanitizedData.dateOfBirth,
-        gender: validationResult.sanitizedData.gender
-      });
+      };
+
+      // Add optional fields if provided
+      if (validationResult.sanitizedData.name) {
+        userDataToCreate.name = validationResult.sanitizedData.name;
+      }
+      if (validationResult.sanitizedData.dateOfBirth) {
+        userDataToCreate.date_of_birth =
+          validationResult.sanitizedData.dateOfBirth;
+      }
+      if (validationResult.sanitizedData.gender) {
+        userDataToCreate.gender = validationResult.sanitizedData.gender;
+      }
+
+      const user = await User.create(userDataToCreate);
 
       return {
         user: userService.sanitizeUser(user),
-        passwordStrength: passwordStrength.strength
+        passwordStrength: passwordStrength.strength,
       };
     } catch (error) {
+      console.error('❌ userService.createUser error:', error);
       throw error;
     }
   },
 
   // Find user by email
   findUserByEmail: async (email) => {
-    try {
-      const user = await User.findOne({
-        where: {
-          email: email.toLowerCase().trim()
-        }
-      });
-      return user;
-    } catch (error) {
-      throw error;
-    }
+    const user = await User.findOne({
+      where: {
+        email: email.toLowerCase().trim(),
+      },
+    });
+    return user;
   },
 
   // Find user by ID
   findUserById: async (id) => {
-    try {
-      const user = await User.findByPk(id);
-      return user;
-    } catch (error) {
-      throw error;
-    }
+    const user = await User.findByPk(id);
+    return user;
   },
 
   // Get all users with pagination and search
   getAllUsers: async (options = {}) => {
-    try {
-      const { page = 1, limit = 10, search } = options;
-      const offset = (page - 1) * limit;
-      
-      let whereClause = {};
-      
-      // Add search functionality
-      if (search) {
-        const { Op } = require('sequelize');
-        whereClause = {
-          [Op.or]: [
-            { name: { [Op.iLike]: `%${search}%` } },
-            { email: { [Op.iLike]: `%${search}%` } }
-          ]
-        };
-      }
-      
-      const { count, rows: users } = await User.findAndCountAll({
-        where: whereClause,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
-        order: [['created_at', 'DESC']]
-      });
-      
-      return {
-        users: users.map(user => userService.sanitizeUser(user)),
-        pagination: {
-          current_page: parseInt(page),
-          total_pages: Math.ceil(count / limit),
-          total_items: count,
-          items_per_page: parseInt(limit)
-        }
+    const { page = 1, limit = 10, search } = options;
+    const offset = (page - 1) * limit;
+
+    let whereClause = {};
+
+    // Add search functionality
+    if (search) {
+      const { Op } = require('sequelize');
+      whereClause = {
+        [Op.or]: [
+          { name: { [Op.iLike]: `%${search}%` } },
+          { email: { [Op.iLike]: `%${search}%` } },
+        ],
       };
-    } catch (error) {
-      throw error;
     }
+
+    const { count, rows: users } = await User.findAndCountAll({
+      where: whereClause,
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      order: [['created_at', 'DESC']],
+    });
+
+    return {
+      users: users.map((user) => userService.sanitizeUser(user)),
+      pagination: {
+        current_page: parseInt(page),
+        total_pages: Math.ceil(count / limit),
+        total_items: count,
+        items_per_page: parseInt(limit),
+      },
+    };
   },
 
   // Update user
@@ -118,7 +126,9 @@ const userService = {
       // Validate update data
       const validationResult = validation.validateUserUpdate(updateData);
       if (!validationResult.isValid) {
-        throw new Error(`Validation failed: ${validationResult.errors.join(', ')}`);
+        throw new Error(
+          `Validation failed: ${validationResult.errors.join(', ')}`
+        );
       }
 
       // Find user
@@ -129,7 +139,9 @@ const userService = {
 
       // Check if email is being updated and if it already exists
       if (updateData.email && updateData.email !== user.email) {
-        const existingUser = await userService.findUserByEmail(updateData.email);
+        const existingUser = await userService.findUserByEmail(
+          updateData.email
+        );
         if (existingUser) {
           throw new Error('User with this email already exists');
         }
@@ -137,7 +149,7 @@ const userService = {
 
       // Update user
       const updatedUser = await user.update(validationResult.sanitizedData);
-      
+
       return userService.sanitizeUser(updatedUser);
     } catch (error) {
       throw error;
@@ -172,9 +184,12 @@ const userService = {
   updatePassword: async (user, newPassword) => {
     try {
       // Check password strength
-      const passwordStrength = require('../utils/password').checkPasswordStrength(newPassword);
+      const passwordStrength =
+        require('../utils/password').checkPasswordStrength(newPassword);
       if (passwordStrength.strength === 'weak') {
-        throw new Error(`Password is too weak: ${passwordStrength.feedback.join(', ')}`);
+        throw new Error(
+          `Password is too weak: ${passwordStrength.feedback.join(', ')}`
+        );
       }
 
       // Hash new password
@@ -185,7 +200,7 @@ const userService = {
       // Update user
       await user.update({
         password_hash: passwordHash,
-        password_salt: passwordSalt
+        password_salt: passwordSalt,
       });
 
       return passwordStrength.strength;
@@ -197,33 +212,36 @@ const userService = {
   // Sanitize user data (remove sensitive information)
   sanitizeUser: (user) => {
     if (!user) return null;
-    
+
     const userData = user.toJSON ? user.toJSON() : user;
     const sanitized = { ...userData };
-    
+
     // Remove sensitive data
     delete sanitized.password_hash;
     delete sanitized.password_salt;
-    
+
     // Add calculated fields
     sanitized.age = userService.calculateAge(userData.date_of_birth);
-    
+
     return sanitized;
   },
 
   // Calculate age from date of birth
   calculateAge: (dateOfBirth) => {
     if (!dateOfBirth) return null;
-    
+
     const today = new Date();
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
-    
+
     return age;
   },
 
@@ -270,7 +288,7 @@ const userService = {
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 module.exports = userService;

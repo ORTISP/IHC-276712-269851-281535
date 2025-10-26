@@ -13,12 +13,8 @@ on:
       - '.github/workflows/frontend-ci.yml'
 
 jobs:
-  test:
+  checks:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
     
     defaults:
       run:
@@ -28,10 +24,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '20.x'
         cache: 'npm'
         cache-dependency-path: frontend/package-lock.json
         
@@ -48,12 +44,3 @@ jobs:
       
     - name: Check Prettier formatting
       run: npm run format
-      
-    - name: TypeScript check (if applicable)
-      run: |
-        if [ -f "tsconfig.json" ]; then
-          npx tsc --noEmit
-          echo "✅ TypeScript check passed"
-        else
-          echo "ℹ️ No TypeScript configuration found, skipping TS check"
-        fi
