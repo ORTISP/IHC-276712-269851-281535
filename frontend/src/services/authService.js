@@ -30,9 +30,9 @@ class AuthService {
   }
 
   static async changePassword(currentPassword, newPassword) {
-    return ApiService.post('/auth/change-password', { 
-      currentPassword, 
-      newPassword 
+    return ApiService.post('/auth/change-password', {
+      currentPassword,
+      newPassword,
     });
   }
 }

@@ -1,17 +1,10 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { theme } from '../styles/theme';
 import Button from '../components/shared/Button';
 import Input from '../components/shared/Input';
 import Card from '../components/shared/Card';
 import Toast from '../components/shared/Toast';
-
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -35,10 +28,13 @@ const LoginScreen = ({ navigation }) => {
       showToast('Please fill in all fields');
       return;
     }
-    
+
     // TODO: Implement actual login logic with backend
     console.log('Login attempt:', { email, password });
-    showToast('Login functionality will be implemented with backend', 'success');
+    showToast(
+      'Login functionality will be implemented with backend',
+      'success',
+    );
   };
 
   const handleBackToWelcome = () => {
@@ -48,12 +44,12 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
-      
+
       <View style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
-          <Button 
-            title="← Back" 
+          <Button
+            title="← Back"
             onPress={handleBackToWelcome}
             variant="secondary"
             size="sm"
@@ -85,25 +81,30 @@ const LoginScreen = ({ navigation }) => {
             autoCorrect={false}
           />
 
-          <Button 
-            title="Login" 
+          <Button
+            title="Login"
             onPress={handleLogin}
             variant="primary"
             size="lg"
             style={styles.loginButton}
           />
 
-          <Button 
-            title="Create Account" 
+          <Button
+            title="Create Account"
             onPress={() => navigation.navigate('Register')}
             variant="secondary"
             size="md"
             style={styles.registerButton}
           />
 
-          <Button 
-            title="Forgot Password?" 
-            onPress={() => showToast('Forgot password functionality will be implemented', 'info')}
+          <Button
+            title="Forgot Password?"
+            onPress={() =>
+              showToast(
+                'Forgot password functionality will be implemented',
+                'info',
+              )
+            }
             variant="secondary"
             size="sm"
             style={styles.forgotPassword}

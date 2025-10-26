@@ -3,7 +3,7 @@ const API_BASE_URL = 'http://10.0.2.2:3000/api';
 class ApiService {
   static async request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
-    
+
     const defaultOptions = {
       headers: {
         'Content-Type': 'application/json',
@@ -22,11 +22,11 @@ class ApiService {
     try {
       const response = await fetch(url, config);
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
-      
+
       return data;
     } catch (error) {
       console.error('API request failed:', error);

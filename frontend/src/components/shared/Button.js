@@ -2,15 +2,15 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { theme, createButtonStyle, createTextStyle } from '../../styles/theme';
 
-const Button = ({ 
-  title, 
-  onPress, 
-  variant = 'primary', 
-  size = 'md', 
+const Button = ({
+  title,
+  onPress,
+  variant = 'primary',
+  size = 'md',
   disabled = false,
   style,
   textStyle,
-  ...props 
+  ...props
 }) => {
   const buttonStyle = [
     createButtonStyle(variant, size),
@@ -20,7 +20,9 @@ const Button = ({
 
   const textStyleCombined = [
     createTextStyle('body'),
-    { color: variant === 'primary' ? theme.colors.white : theme.colors.primary },
+    {
+      color: variant === 'primary' ? theme.colors.white : theme.colors.primary,
+    },
     textStyle,
   ];
 

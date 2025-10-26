@@ -2,15 +2,15 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { theme } from '../../styles/theme';
 
-const Input = ({ 
-  label, 
-  value, 
-  onChangeText, 
-  placeholder, 
+const Input = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
   secureTextEntry = false,
   keyboardType = 'default',
   style,
-  ...props 
+  ...props
 }) => {
   return (
     <View style={styles.container}>

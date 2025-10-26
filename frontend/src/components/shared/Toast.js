@@ -1,18 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-} from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { theme } from '../../styles/theme';
 
-const Toast = ({ 
-  visible, 
-  message, 
-  type = 'error', 
-  duration = 3000, 
-  onHide 
+const Toast = ({
+  visible,
+  message,
+  type = 'error',
+  duration = 3000,
+  onHide,
 }) => {
   const translateY = useRef(new Animated.Value(-100)).current;
   const opacity = useRef(new Animated.Value(0)).current;
@@ -57,7 +52,7 @@ const Toast = ({
 
       return () => clearTimeout(timer);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, duration]);
 
   if (!visible) {
