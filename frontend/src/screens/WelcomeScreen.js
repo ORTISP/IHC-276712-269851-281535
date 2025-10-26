@@ -7,8 +7,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import { theme } from '../styles/theme';
-import Button from '../components/Button';
-import Card from '../components/Card';
+import Button from '../components/shared/Button';
+import Card from '../components/shared/Card';
 
 
 const WelcomeScreen = ({ navigation }) => {

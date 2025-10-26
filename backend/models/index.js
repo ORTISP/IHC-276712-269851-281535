@@ -6,13 +6,13 @@ const UserSession = require('./UserSession');
 User.hasMany(UserSession, {
   foreignKey: 'user_id',
   as: 'sessions',
-  onDelete: 'CASCADE'
+  onDelete: 'CASCADE',
 });
 
 UserSession.belongsTo(User, {
   foreignKey: 'user_id',
   as: 'user',
-  onDelete: 'CASCADE'
+  onDelete: 'CASCADE',
 });
 
 // Initialize database and sync models
@@ -48,5 +48,5 @@ module.exports = {
   User,
   UserSession,
   initializeDatabase,
-  closeDatabase
+  closeDatabase,
 };
