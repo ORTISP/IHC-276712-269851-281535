@@ -49,7 +49,4 @@ const Menu = sequelize.define(
   }
 );
 
-// Relaciones
-Menu.belongsTo(User, { foreignKey: 'user_id', as: 'creator' });
-
 module.exports = Menu;

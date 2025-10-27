@@ -7,6 +7,8 @@ const indexRoutes = require('./routes/index');
 // const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const menuRoutes = require('./routes/menus');
+const mealRoutes = require('./routes/meals');
+const dayRoutes = require('./routes/days');
 
 // Import database
 const { initializeDatabase } = require('./models');
@@ -24,6 +26,8 @@ app.use('/api', indexRoutes);
 // app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/menus', menuRoutes);
+app.use('/api/meals', mealRoutes);
+app.use('/api/days', dayRoutes);
 
 // Initialize database and start server
 const startServer = async () => {

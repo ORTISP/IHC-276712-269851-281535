@@ -1,5 +1,3 @@
-// controllers/menuController.js
-
 const menuService = require('../businessLogic/menuService');
 
 const menuController = {

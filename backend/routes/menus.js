@@ -17,4 +17,7 @@ router.put('/:id', menuController.updateMenu);
 // DELETE /api/menus/:id - Delete menu
 router.delete('/:id', menuController.deleteMenu);
 
+// GET /api/menus/:menuId/days - Get days for a specific menu
+router.get('/:menuId/days', menuController.getDaysForMenu);
+
 module.exports = router;

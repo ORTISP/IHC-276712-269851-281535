@@ -35,7 +35,4 @@ const MenuDay = sequelize.define(
   }
 );
 
-Menu.hasMany(MenuDay, { foreignKey: 'menu_id', as: 'days' });
-MenuDay.belongsTo(Menu, { foreignKey: 'menu_id', as: 'menu' });
-
 module.exports = MenuDay;

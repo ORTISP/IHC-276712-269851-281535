@@ -24,6 +24,7 @@ const menuService = {
         name: sanitized.name,
         type: sanitized.type,
         is_public: sanitized.is_public,
+        user_id: sanitized.user_id,
       });
 
       // Si se solicita, crear días y comidas automáticamente
@@ -138,7 +139,8 @@ const menuService = {
           updateData.is_public !== undefined
             ? updateData.is_public
             : menu.is_public,
-        create_days: updateData.create_days, // optional flag
+		  create_days: updateData.create_days, // optional flag
+		user_id: menu.user_id,
       };
       const validationResult = validation.validateMenuCreation(tmp);
       if (!validationResult.isValid) {

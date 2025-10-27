@@ -35,7 +35,4 @@ const Meal = sequelize.define(
   }
 );
 
-MenuDay.hasMany(Meal, { foreignKey: 'menu_day_id', as: 'meals' });
-Meal.belongsTo(MenuDay, { foreignKey: 'menu_day_id', as: 'day' });
-
 module.exports = Meal;

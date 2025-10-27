@@ -41,9 +41,12 @@ module.exports = {
     // is_public
     sanitized.is_public = Boolean(data.is_public);
 
-    // optional: initialDays boolean to indicate whether createMenu should auto-create days/meals
-    sanitized.create_days =
-      data.create_days === undefined ? true : Boolean(data.create_days);
+    // user_id
+    if (data.user_id === undefined || data.user_id === null) {
+      errors.push('user_id is required');
+    } else {
+      sanitized.user_id = Number(data.user_id);
+    }
 
     return {
       isValid: errors.length === 0,
