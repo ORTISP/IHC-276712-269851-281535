@@ -26,8 +26,8 @@ app.use('/api', indexRoutes);
 // app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/menus', menuRoutes);
-app.use('/api/meals', mealRoutes);
-app.use('/api/days', dayRoutes);
+app.use('/api', mealRoutes);
+app.use('/api', dayRoutes);
 
 // Initialize database and start server
 const startServer = async () => {

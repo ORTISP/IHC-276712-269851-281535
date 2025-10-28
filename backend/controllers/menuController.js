@@ -4,12 +4,13 @@ const menuController = {
   // Obtener todos los menús
   getAllMenus: async (req, res) => {
     try {
-      const { page = 1, limit = 10, search } = req.query;
+      const { page = 1, limit = 10, search, is_public } = req.query;
 
       const result = await menuService.getAllMenus({
         page: parseInt(page),
         limit: parseInt(limit),
         search,
+        is_public: is_public === 'true' ? true : is_public === 'false' ? false : undefined,
       });
 
       res.json({
@@ -26,20 +27,12 @@ const menuController = {
     }
   },
 
-  // Obtener un menú por ID
+  // Obtener menú por ID
   getMenuById: async (req, res) => {
     try {
       const { id } = req.params;
 
-      if (!id) {
-        return res.status(400).json({
-          success: false,
-          error: 'Se requiere el ID del menú',
-        });
-      }
-
       const menu = await menuService.getMenuById(id);
-
       if (!menu) {
         return res.status(404).json({
           success: false,
@@ -53,15 +46,15 @@ const menuController = {
         data: menu,
       });
     } catch (error) {
-      console.error('Error al obtener el menú:', error);
+      console.error('Error al obtener menú:', error);
       res.status(500).json({
         success: false,
-        error: 'Error interno del servidor al obtener el menú',
+        error: 'Error interno del servidor al obtener menú',
       });
     }
   },
 
-  // Crear un nuevo menú
+  // Crear menú
   createMenu: async (req, res) => {
     try {
       const { name, type, is_public, user_id } = req.body;
@@ -95,35 +88,21 @@ const menuController = {
     }
   },
 
-  // Actualizar un menú
+  // Actualizar menú
   updateMenu: async (req, res) => {
     try {
       const { id } = req.params;
       const updateData = req.body;
 
-      if (!id) {
-        return res.status(400).json({
-          success: false,
-          error: 'Se requiere el ID del menú',
-        });
-      }
-
-      const updatedMenu = await menuService.updateMenu(id, updateData);
+      const updated = await menuService.updateMenu(id, updateData);
 
       res.json({
         success: true,
         message: 'Menú actualizado correctamente',
-        data: updatedMenu,
+        data: updated,
       });
     } catch (error) {
       console.error('Error al actualizar menú:', error);
-
-      if (error.message.includes('Validation failed')) {
-        return res.status(400).json({
-          success: false,
-          error: error.message,
-        });
-      }
 
       if (error.message.includes('not found')) {
         return res.status(404).json({
@@ -134,105 +113,25 @@ const menuController = {
 
       res.status(500).json({
         success: false,
-        error: 'Error interno del servidor al actualizar el menú',
+        error: 'Error interno del servidor al actualizar menú',
       });
     }
   },
 
-  // Eliminar un menú
+  // Eliminar menú
   deleteMenu: async (req, res) => {
     try {
       const { id } = req.params;
-
-      if (!id) {
-        return res.status(400).json({
-          success: false,
-          error: 'Se requiere el ID del menú',
-        });
-      }
-
       await menuService.deleteMenu(id);
-
       res.json({
         success: true,
         message: 'Menú eliminado correctamente',
       });
     } catch (error) {
       console.error('Error al eliminar menú:', error);
-
-      if (error.message.includes('not found')) {
-        return res.status(404).json({
-          success: false,
-          error: error.message,
-        });
-      }
-
       res.status(500).json({
         success: false,
-        error: 'Error interno del servidor al eliminar el menú',
-      });
-    }
-  },
-
-  // Obtener los días de un menú
-  getDaysForMenu: async (req, res) => {
-    try {
-      const { menuId } = req.params;
-
-      const days = await menuService.getDaysForMenu(menuId);
-
-      res.json({
-        success: true,
-        message: 'Días obtenidos correctamente',
-        data: days,
-      });
-    } catch (error) {
-      console.error('Error al obtener días del menú:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Error interno del servidor al obtener días del menú',
-      });
-    }
-  },
-
-  // Obtener comidas de un día
-  getMealsForDay: async (req, res) => {
-    try {
-      const { dayId } = req.params;
-
-      const meals = await menuService.getMealsForDay(dayId);
-
-      res.json({
-        success: true,
-        message: 'Comidas obtenidas correctamente',
-        data: meals,
-      });
-    } catch (error) {
-      console.error('Error al obtener comidas del día:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Error interno del servidor al obtener comidas del día',
-      });
-    }
-  },
-
-  // Obtener recetas de una comida
-  getRecipesForMeal: async (req, res) => {
-    try {
-      const { mealId } = req.params;
-
-      const recipes = await menuService.getRecipesForMeal(mealId);
-
-      res.json({
-        success: true,
-        message: 'Recetas obtenidas correctamente',
-        data: recipes,
-      });
-    } catch (error) {
-      console.error('Error al obtener recetas de la comida:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Error interno del servidor al obtener recetas de la comida',
+        error: 'Error interno del servidor al eliminar menú',
       });
     }
   },
