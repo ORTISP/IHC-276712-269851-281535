@@ -1,23 +1,14 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const mealController = require('../controllers/mealController');
 
-// GET /api/days/:dayId/meals - Obtener comidas de un día
-router.get('/days/:dayId/meals', mealController.getMealsForDay);
+// GET /api/menus/:menuId/days/:dayNumber/meals - Obtener comidas de un día
+router.get('/days/:dayNumber/meals', mealController.getMealsForDay);
 
-// POST /api/menus/:menuId/meals - Agregar comida (crea el día si no existe)
-router.post('/menus/:menuId/meals', mealController.addMealToDay)
+// POST /api/menus/:menuId/meals/add-recipe - Agregar receta
+router.post('/meals/add-recipe', mealController.addRecipeToMeal);
 
-// PUT /api/meals/:mealId - Actualizar comida
-router.put('/meals/:mealId', mealController.updateMeal);
-
-// DELETE /api/meals/:mealId - Eliminar comida
-router.delete('/meals/:mealId', mealController.deleteMeal);
-
-// POST /api/meals/:mealId/recipes - Agregar receta
-router.post('/meals/:mealId/recipes', mealController.addRecipeToMeal);
-
-// DELETE /api/meals/:mealId/recipes/:recipeId - Eliminar receta
-router.delete('/meals/:mealId/recipes/:recipeId', mealController.removeRecipeFromMeal);
+// DELETE /api/menus/:menuId/meals/delete-recipe - Eliminar receta
+router.delete('/meals/delete-recipe', mealController.removeRecipeFromMeal);
 
 module.exports = router;

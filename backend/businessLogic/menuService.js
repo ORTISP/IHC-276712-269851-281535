@@ -1,11 +1,14 @@
 const { Menu, MenuDay, Meal, MealRecipe } = require('../models');
 const validation = require('./validation/menuValidation');
+const { MENU_TYPE_DAYS } = require('../utils/constants');
 
 const menuService = {
   createMenu: async (menuData) => {
     const validationResult = validation.validateMenuCreation(menuData);
     if (!validationResult.isValid) {
-      throw new Error(`Validation failed: ${validationResult.errors.join(', ')}`);
+      throw new Error(
+        `Validation failed: ${validationResult.errors.join(', ')}`
+      );
     }
 
     const { sanitized } = validationResult;
@@ -86,6 +89,34 @@ const menuService = {
     if (!menu) throw new Error('Menu not found');
     await menu.destroy();
     return true;
+  },
+
+  getMenuStructure: async (menuId) => {
+    const menu = await Menu.findByPk(menuId, {
+      include: {
+        model: MenuDay,
+        as: 'days',
+        include: [{ model: Meal, as: 'meals' }],
+      },
+    });
+
+    if (!menu) throw new Error('Menú no encontrado');
+
+    // Determinar cantidad de días según tipo
+    const totalDays = MENU_TYPE_DAYS[menu.type];
+    const structure = Array.from({ length: totalDays }, () => ({}));
+
+    // Recorrer los días y marcar tipos de comidas existentes
+    for (const day of menu.days) {
+      const dayIndex = day.day_number - 1; // día 1 → índice 0
+      if (dayIndex >= 0 && dayIndex < structure.length) {
+        for (const meal of day.meals) {
+          structure[dayIndex][meal.type] = true;
+        }
+      }
+    }
+
+    return structure;
   },
 };
 

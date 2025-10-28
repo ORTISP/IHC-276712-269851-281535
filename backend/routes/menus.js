@@ -17,4 +17,7 @@ router.put('/:id', menuController.updateMenu);
 // DELETE /api/menus/:id - Eliminar un menú
 router.delete('/:id', menuController.deleteMenu);
 
+// GET /api/menus/:id/structure - Obtener estructura de comidas del menú
+router.get('/:id/structure', menuController.getMenuStructure);
+
 module.exports = router;

@@ -10,7 +10,12 @@ const menuController = {
         page: parseInt(page),
         limit: parseInt(limit),
         search,
-        is_public: is_public === 'true' ? true : is_public === 'false' ? false : undefined,
+        is_public:
+          is_public === 'true'
+            ? true
+            : is_public === 'false'
+              ? false
+              : undefined,
       });
 
       res.json({
@@ -132,6 +137,26 @@ const menuController = {
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor al eliminar menú',
+      });
+    }
+  },
+
+  // Obtener estructura de comidas del menú (por día y tipo)
+  getMenuStructure: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const structure = await menuService.getMenuStructure(id);
+
+      res.json({
+        success: true,
+        message: 'Estructura del menú obtenida correctamente',
+        data: structure,
+      });
+    } catch (error) {
+      console.error('Error al obtener estructura del menú:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Error interno del servidor al obtener estructura del menú',
       });
     }
   },

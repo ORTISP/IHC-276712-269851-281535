@@ -118,12 +118,6 @@ module.exports = {
       return { isValid: false, errors, sanitized: null };
     }
 
-    if (!data.meal_id || !Number.isInteger(Number(data.meal_id))) {
-      errors.push('meal_id is required and must be an integer');
-    } else {
-      sanitized.meal_id = Number(data.meal_id);
-    }
-
     if (!data.recipe_id || !Number.isInteger(Number(data.recipe_id))) {
       errors.push('recipe_id is required and must be an integer');
     } else {
