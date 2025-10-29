@@ -15,8 +15,8 @@ const config = {
       max: 5,
       min: 0,
       acquire: 30000,
-      idle: 10000
-    }
+      idle: 10000,
+    },
   },
   test: {
     username: process.env.DB_USER || 'ihc_user',
@@ -25,7 +25,7 @@ const config = {
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 5432,
     dialect: 'postgres',
-    logging: false
+    logging: false,
   },
   production: {
     username: process.env.DB_USER,
@@ -39,15 +39,18 @@ const config = {
       max: 20,
       min: 0,
       acquire: 60000,
-      idle: 10000
+      idle: 10000,
     },
     dialectOptions: {
-      ssl: process.env.DB_SSL === 'true' ? {
-        require: true,
-        rejectUnauthorized: false
-      } : false
-    }
-  }
+      ssl:
+        process.env.DB_SSL === 'true'
+          ? {
+              require: true,
+              rejectUnauthorized: false,
+            }
+          : false,
+    },
+  },
 };
 
 // Get current environment
@@ -70,8 +73,8 @@ const sequelize = new Sequelize(
       timestamps: true,
       underscored: true,
       createdAt: 'created_at',
-      updatedAt: 'updated_at'
-    }
+      updatedAt: 'updated_at',
+    },
   }
 );
 
@@ -88,5 +91,5 @@ const testConnection = async () => {
 module.exports = {
   sequelize,
   testConnection,
-  config
+  config,
 };

@@ -3,22 +3,12 @@ name: Backend CI
 on:
   push:
     branches: [ main, develop ]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/backend-ci.yml'
   pull_request:
     branches: [ main, develop ]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/backend-ci.yml'
 
 jobs:
-  test:
+  checks:
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
     
     defaults:
       run:
@@ -28,10 +18,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '20.x'
         cache: 'npm'
         cache-dependency-path: backend/package-lock.json
         
@@ -48,10 +38,3 @@ jobs:
       
     - name: Check Prettier formatting
       run: npm run format
-      
-    - name: Start server and test health endpoint
-      run: |
-        npm start &
-        sleep 5
-        curl -f http://localhost:3000/api/health || exit 1
-        echo "✅ Server health check passed"

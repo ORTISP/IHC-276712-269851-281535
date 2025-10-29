@@ -5,11 +5,13 @@ This is the backend API for the mobile application built with Node.js and Expres
 ## Setup
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
 
 2. Create a `.env` file in the root directory with:
+
    ```
    PORT=3000
    NODE_ENV=development
