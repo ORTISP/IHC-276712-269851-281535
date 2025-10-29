@@ -113,6 +113,23 @@ const authController = {
       });
     } catch (error) {
       console.error('❌ Registration error:', error);
+      
+      // Handle specific error cases
+      if (error.message.includes('already exists')) {
+        return res.status(409).json({
+          success: false,
+          error: error.message || 'User with this email already exists',
+        });
+      }
+      
+      if (error.message.includes('Validation failed') || error.message.includes('Password is too weak')) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+      
+      // Default to 500 for unexpected errors
       res.status(500).json({
         success: false,
         error: 'Internal server error during registration',
