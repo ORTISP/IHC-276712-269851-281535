@@ -13,7 +13,7 @@ const AppNavigator = () => {
       <Stack.Navigator
         initialRouteName="Welcome"
         screenOptions={{
-          headerShown: false, // Hide default header since we have custom headers
+          headerShown: false,
         }}
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
