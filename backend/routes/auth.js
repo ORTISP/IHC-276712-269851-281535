@@ -11,6 +11,9 @@ router.post('/register', authController.register);
 // POST /api/auth/logout - User logout
 router.post('/logout', authController.logout);
 
+// GET /api/auth/test - Test endpoint
+router.get('/test', authController.test);
+
 // GET /api/auth/me - Get current user
 router.get('/me', authController.getProfile);
 

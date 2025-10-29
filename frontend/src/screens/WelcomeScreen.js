@@ -1,15 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { theme } from '../styles/theme';
-import Button from '../components/Button';
-import Card from '../components/Card';
-
+import Button from '../components/shared/Button';
+import Card from '../components/shared/Card';
 
 const WelcomeScreen = ({ navigation }) => {
   const handleGetStarted = () => {
@@ -23,21 +16,19 @@ const WelcomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.white} />
-      
+
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <Text style={styles.title}>Welcome!</Text>
-          <Button 
-            title="Login" 
+          <Button
+            title="Login"
             onPress={handleLogin}
             variant="primary"
             size="sm"
           />
         </View>
-        <Text style={styles.subtitle}>
-          Your mobile app is ready to use
-        </Text>
+        <Text style={styles.subtitle}>Your mobile app is ready to use</Text>
       </View>
 
       {/* Main Content */}
@@ -47,14 +38,15 @@ const WelcomeScreen = ({ navigation }) => {
             <Text style={styles.icon}>📱</Text>
           </View>
           <Text style={styles.description}>
-            This is your React Native app. You can start building amazing features from here.
+            This is your React Native app. You can start building amazing
+            features from here.
           </Text>
         </Card>
 
         {/* Action Button */}
         <View style={styles.actions}>
-          <Button 
-            title="Get Started" 
+          <Button
+            title="Get Started"
             onPress={handleGetStarted}
             variant="primary"
             size="lg"

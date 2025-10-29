@@ -1,4 +1,4 @@
-const userService = require('../businessLogic/userService');
+const userService = require('../services/userService');
 
 const userController = {
   // Get all users
