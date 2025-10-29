@@ -21,16 +21,47 @@ class ApiService {
 
     try {
       const response = await fetch(url, config);
-      const data = await response.json();
+
+      // Handle network errors
+      if (!response) {
+        throw new Error('Network request failed. Please check your connection.');
+      }
+
+      let data;
+      try {
+        const text = await response.text();
+        data = text ? JSON.parse(text) : {};
+      } catch (parseError) {
+        // If response is not JSON, create a generic error
+        throw new Error(`Server error (${response.status}): ${response.statusText}`);
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        // Create error with details from backend
+        const error = new Error(data.error || `HTTP error! status: ${response.status}`);
+        error.status = response.status;
+        error.details = data.details || [];
+        error.responseData = data;
+        error.message = data.error || error.message;
+        throw error;
       }
 
       return data;
     } catch (error) {
       console.error('API request failed:', error);
-      throw error;
+      
+      // Handle network errors specifically
+      if (error.message === 'Network request failed' || error.message.includes('Network')) {
+        throw new Error('Error de conexión. Por favor verifica que el servidor esté corriendo.');
+      }
+      
+      // If error already has a message from backend, keep it
+      if (error.message && !error.message.includes('HTTP error')) {
+        throw error;
+      }
+      
+      // Otherwise, throw with a generic message
+      throw new Error(error.message || 'Error al procesar la solicitud');
     }
   }
 
