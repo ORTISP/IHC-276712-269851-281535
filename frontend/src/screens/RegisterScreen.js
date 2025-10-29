@@ -70,9 +70,11 @@ const RegisterScreen = ({ navigation }) => {
         setPassword('');
         setConfirmPassword('');
 
-        // Navigate to form screen after a short delay
+        // Navigate to form screen with user ID after a short delay
         setTimeout(() => {
-          navigation.navigate('Form');
+          navigation.navigate('Form', {
+            userId: response.data?.user?.id,
+          });
         }, 2000);
       } else {
         showToast(response.error || 'Error al registrar');
