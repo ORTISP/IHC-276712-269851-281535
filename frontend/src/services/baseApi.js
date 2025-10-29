@@ -37,12 +37,16 @@ class ApiService {
       }
 
       if (!response.ok) {
-        // Create error with details from backend
-        const error = new Error(data.error || `HTTP error! status: ${response.status}`);
+        // Create error with details from backend - structure it like axios
+        const error = new Error(data.error || data.message || `HTTP error! status: ${response.status}`);
         error.status = response.status;
         error.details = data.details || [];
-        error.responseData = data;
-        error.message = data.error || error.message;
+        error.response = {
+          data: data,
+          status: response.status,
+          statusText: response.statusText,
+        };
+        error.message = data.error || data.message || error.message;
         throw error;
       }
 

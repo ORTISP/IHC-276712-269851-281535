@@ -22,8 +22,8 @@ const initializeDatabase = async () => {
     await sequelize.authenticate();
     console.log('✅ Database connection established successfully.');
 
-    // Sync models (create tables if they don't exist)
-    await sequelize.sync({ alter: false }); // Use { force: true } to drop and recreate tables
+    // Sync models (create tables if they don't exist, alter existing tables to match models)
+    await sequelize.sync({ alter: true }); // Alter existing tables to match models
     console.log('✅ Database models synchronized successfully.');
 
     return true;

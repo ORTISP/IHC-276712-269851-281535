@@ -134,25 +134,26 @@ const validation = {
     return { isValid: true, sanitized: dateOfBirth };
   },
 
-  // Gender validation
+  // Gender validation (solo español)
   isValidGender: (gender) => {
     if (!gender || typeof gender !== 'string') {
       return {
         isValid: false,
-        error: 'Gender is required and must be a string',
+        error: 'El género es requerido y debe ser un texto',
       };
     }
 
-    const validGenders = ['male', 'female', 'other', 'prefer-not-to-say'];
-    const normalizedGender = gender.toLowerCase().trim();
+    const allowed = ['Masculino', 'Femenino', 'Otro'];
+    const normalizedGender = gender.trim();
 
-    if (!validGenders.includes(normalizedGender)) {
+    if (!allowed.includes(normalizedGender)) {
       return {
         isValid: false,
-        error: 'Gender must be one of: male, female, other, prefer-not-to-say',
+        error: 'El género debe ser: Masculino, Femenino u Otro',
       };
     }
 
+    // Devolvemos el valor en español; el servicio lo mapeará al enum de BD
     return { isValid: true, sanitized: normalizedGender };
   },
 
@@ -263,20 +264,32 @@ const validation = {
       if (!emailValidation.isValid) {
         errors.push(emailValidation.error);
       } else {
-        sanitizedData.email = emailValidation.email.toLowerCase().trim();
+        sanitizedData.email = updateData.email.toLowerCase().trim();
       }
     }
 
     // Validate date of birth if provided
-    if (updateData.dateOfBirth !== undefined) {
-      const dobValidation = validation.isValidDateOfBirth(
-        updateData.dateOfBirth
-      );
-      if (!dobValidation.isValid) {
-        errors.push(dobValidation.error);
+    // For updates, we validate format and basic sanity checks but not strict age requirements
+    if (updateData.dateOfBirth !== undefined && updateData.dateOfBirth !== null) {
+      if (typeof updateData.dateOfBirth !== 'string') {
+        errors.push('La fecha de nacimiento debe ser un texto en formato YYYY-MM-DD');
       } else {
-        sanitizedData.dateOfBirth = dobValidation.sanitized;
+        const date = new Date(updateData.dateOfBirth);
+        const today = new Date();
+
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+          errors.push('Por favor proporciona una fecha válida (formato YYYY-MM-DD)');
+        } else if (date > today) {
+          errors.push('La fecha de nacimiento no puede ser en el futuro');
+        } else {
+          // Valid date, accept it (no strict age validation for updates)
+          sanitizedData.dateOfBirth = updateData.dateOfBirth.trim();
+        }
       }
+    } else if (updateData.dateOfBirth === null) {
+      // Allow clearing the date of birth
+      sanitizedData.dateOfBirth = null;
     }
 
     // Validate gender if provided
@@ -286,6 +299,55 @@ const validation = {
         errors.push(genderValidation.error);
       } else {
         sanitizedData.gender = genderValidation.sanitized;
+      }
+    }
+
+    // Validate diet type if provided
+    if (updateData.dietType !== undefined) {
+      if (typeof updateData.dietType !== 'string') {
+        errors.push('El tipo de dieta debe ser un texto');
+      } else {
+        const trimmed = updateData.dietType.trim();
+        if (trimmed.length > 100) {
+          errors.push('El tipo de dieta debe tener menos de 100 caracteres');
+        } else if (trimmed.length > 0) {
+          sanitizedData.dietType = trimmed;
+        }
+      }
+    }
+
+    // Validate restrictions if provided
+    if (updateData.restrictions !== undefined) {
+      if (!Array.isArray(updateData.restrictions)) {
+        errors.push('Las restricciones deben ser un arreglo');
+      } else {
+        const validRestrictions = updateData.restrictions.filter(
+          (r) => typeof r === 'string' && r.trim().length > 0
+        );
+        sanitizedData.restrictions = validRestrictions.map((r) => r.trim());
+      }
+    }
+
+    // Validate nutritional objective if provided
+    if (updateData.nutritionalObjective !== undefined) {
+      if (typeof updateData.nutritionalObjective !== 'string') {
+        errors.push('El objetivo nutricional debe ser un texto');
+      } else {
+        const trimmed = updateData.nutritionalObjective.trim();
+        if (trimmed.length > 100) {
+          errors.push('El objetivo nutricional debe tener menos de 100 caracteres');
+        } else if (trimmed.length > 0) {
+          sanitizedData.nutritionalObjective = trimmed;
+        }
+      }
+    }
+
+    // Validate private recipes if provided
+    if (updateData.privateRecipes !== undefined) {
+      if (typeof updateData.privateRecipes !== 'boolean') {
+        errors.push('Recetas privadas debe ser un booleano');
+      } else {
+        sanitizedData.privateRecipes = updateData.privateRecipes;
       }
     }
 
