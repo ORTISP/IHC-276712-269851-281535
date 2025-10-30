@@ -6,6 +6,7 @@ import Input from '../components/shared/Input';
 import Card from '../components/shared/Card';
 import Toast from '../components/shared/Toast';
 import AuthService from '../services/authService';
+import authStorage from '../services/authStorage';
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -63,6 +64,14 @@ const RegisterScreen = ({ navigation }) => {
       const response = await AuthService.register(registrationData);
 
       if (response.success) {
+        // Save token and user ID for automatic login
+        if (response.data?.token) {
+          await authStorage.saveToken(response.data.token);
+        }
+        if (response.data?.user?.id) {
+          await authStorage.saveUserId(response.data.user.id);
+        }
+
         showToast('¡Cuenta creada exitosamente!', 'success');
 
         // Clear form

@@ -1,12 +1,18 @@
+import authStorage from './authStorage';
+
 const API_BASE_URL = 'http://10.0.2.2:3000/api';
 
 class ApiService {
   static async request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
 
+    // Get token if available
+    const token = await authStorage.getToken();
+
     const defaultOptions = {
       headers: {
         'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
       },
     };
 
