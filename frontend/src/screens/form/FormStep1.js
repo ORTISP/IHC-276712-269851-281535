@@ -1,10 +1,17 @@
-import React from 'react';
-import Card from '../../components/shared/Card';
-import Input from '../../components/shared/Input';
-import DatePicker from '../../components/formComponents/DatePicker';
-import GenderSelector from '../../components/formComponents/GenderSelector';
+import React from "react";
+import Card from "../../components/shared/Card";
+import Input from "../../components/shared/Input";
+import DatePicker from "../../components/formComponents/DatePicker";
+import GenderSelector from "../../components/formComponents/GenderSelector";
 
-const FormStep1 = ({ name, setName, dateOfBirth, setDateOfBirth, gender, setGender }) => {
+const FormStep1 = ({
+  name,
+  setName,
+  dateOfBirth,
+  setDateOfBirth,
+  gender,
+  setGender,
+}) => {
   return (
     <Card className="p-6">
       <Input
@@ -25,11 +32,10 @@ const FormStep1 = ({ name, setName, dateOfBirth, setDateOfBirth, gender, setGend
         label="Género"
         value={gender}
         onChange={setGender}
-        options={['Masculino', 'Femenino', 'Otro']}
+        options={["Masculino", "Femenino", "Otro"]}
       />
     </Card>
   );
 };
 
 export default FormStep1;
-

@@ -1,12 +1,12 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { theme, createButtonStyle, createTextStyle } from '../../styles/theme';
+import React from "react";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { theme, createButtonStyle, createTextStyle } from "../../styles/theme";
 
 const Button = ({
   title,
   onPress,
-  variant = 'primary',
-  size = 'md',
+  variant = "primary",
+  size = "md",
   disabled = false,
   style,
   textStyle,
@@ -19,9 +19,9 @@ const Button = ({
   ];
 
   const textStyleCombined = [
-    createTextStyle('body'),
+    createTextStyle("body"),
     {
-      color: variant === 'primary' ? theme.colors.white : theme.colors.primary,
+      color: variant === "primary" ? theme.colors.white : theme.colors.primary,
     },
     textStyle,
   ];

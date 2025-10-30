@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { View, SafeAreaView, StatusBar, ScrollView } from 'react-native';
-import Toast from '../components/shared/Toast';
-import FormHeader from '../components/formComponents/FormHeader';
-import FormDrawer from './form/FormDrawer';
-import FormContent from './form/FormContent';
-import NextStepButton from './form/NextStepButton';
-import { useFormData } from './form/useFormData';
-import { useFormSubmission } from './form/useFormSubmission';
+import React, { useState } from "react";
+import { View, SafeAreaView, StatusBar, ScrollView } from "react-native";
+import Toast from "../components/shared/Toast";
+import FormHeader from "../components/formComponents/FormHeader";
+import FormDrawer from "./form/FormDrawer";
+import FormContent from "./form/FormContent";
+import NextStepButton from "./form/NextStepButton";
+import { useFormData } from "./form/useFormData";
+import { useFormSubmission } from "./form/useFormSubmission";
 
 const FormScreen = ({ navigation, route }) => {
   const userId = route?.params?.userId;
@@ -16,7 +16,8 @@ const FormScreen = ({ navigation, route }) => {
 
   // Custom hooks for form logic
   const formData = useFormData(currentStep);
-  const { toastVisible, toastMessage, toastType, hideToast, submitForm } = useFormSubmission(userId, navigation);
+  const { toastVisible, toastMessage, toastType, hideToast, submitForm } =
+    useFormSubmission(userId, navigation);
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -27,7 +28,7 @@ const FormScreen = ({ navigation, route }) => {
   };
 
   const handleSkip = () => {
-    navigation.navigate('Welcome');
+    navigation.navigate("Welcome");
   };
 
   const handleNextStep = async () => {
@@ -51,9 +52,9 @@ const FormScreen = ({ navigation, route }) => {
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
-      <FormHeader 
-        onBack={handleBack} 
-        onSkip={handleSkip} 
+      <FormHeader
+        onBack={handleBack}
+        onSkip={handleSkip}
         currentStep={currentStep}
         totalSteps={totalSteps}
       />

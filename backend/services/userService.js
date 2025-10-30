@@ -149,44 +149,47 @@ const userService = {
 
       // Prepare update data - map frontend fields to database fields
       const updateFields = {};
-      
+
       if (validationResult.sanitizedData.name !== undefined) {
         updateFields.name = validationResult.sanitizedData.name;
       }
-      
+
       if (validationResult.sanitizedData.email !== undefined) {
         updateFields.email = validationResult.sanitizedData.email;
       }
-      
+
       if (validationResult.sanitizedData.dateOfBirth !== undefined) {
         updateFields.date_of_birth = validationResult.sanitizedData.dateOfBirth;
       }
-      
+
       if (validationResult.sanitizedData.gender !== undefined) {
         // Mapear valores en español al enum de BD
         const genderMap = {
-          'Masculino': 'male',
-          'Femenino': 'female',
-          'Otro': 'other',
+          Masculino: 'male',
+          Femenino: 'female',
+          Otro: 'other',
         };
-        const normalizedGender = genderMap[validationResult.sanitizedData.gender];
+        const normalizedGender =
+          genderMap[validationResult.sanitizedData.gender];
         updateFields.gender = normalizedGender;
       }
-      
+
       if (validationResult.sanitizedData.dietType !== undefined) {
         updateFields.diet_type = validationResult.sanitizedData.dietType;
       }
-      
+
       if (validationResult.sanitizedData.restrictions !== undefined) {
         updateFields.restrictions = validationResult.sanitizedData.restrictions;
       }
-      
+
       if (validationResult.sanitizedData.nutritionalObjective !== undefined) {
-        updateFields.nutritional_objective = validationResult.sanitizedData.nutritionalObjective;
+        updateFields.nutritional_objective =
+          validationResult.sanitizedData.nutritionalObjective;
       }
-      
+
       if (validationResult.sanitizedData.privateRecipes !== undefined) {
-        updateFields.private_recipes = validationResult.sanitizedData.privateRecipes;
+        updateFields.private_recipes =
+          validationResult.sanitizedData.privateRecipes;
       }
 
       // Update user

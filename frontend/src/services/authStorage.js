@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AUTH_TOKEN_KEY = '@auth_token';
-const USER_ID_KEY = '@user_id';
+const AUTH_TOKEN_KEY = "@auth_token";
+const USER_ID_KEY = "@user_id";
 
 const authStorage = {
   // Save authentication token
@@ -9,7 +9,7 @@ const authStorage = {
     try {
       await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
     } catch (error) {
-      console.error('Error saving token:', error);
+      console.error("Error saving token:", error);
       throw error;
     }
   },
@@ -20,7 +20,7 @@ const authStorage = {
       const token = await AsyncStorage.getItem(AUTH_TOKEN_KEY);
       return token;
     } catch (error) {
-      console.error('Error getting token:', error);
+      console.error("Error getting token:", error);
       return null;
     }
   },
@@ -31,7 +31,7 @@ const authStorage = {
       await AsyncStorage.removeItem(AUTH_TOKEN_KEY);
       await AsyncStorage.removeItem(USER_ID_KEY);
     } catch (error) {
-      console.error('Error removing token:', error);
+      console.error("Error removing token:", error);
       throw error;
     }
   },
@@ -41,7 +41,7 @@ const authStorage = {
     try {
       await AsyncStorage.setItem(USER_ID_KEY, userId.toString());
     } catch (error) {
-      console.error('Error saving user ID:', error);
+      console.error("Error saving user ID:", error);
       throw error;
     }
   },
@@ -52,7 +52,7 @@ const authStorage = {
       const userId = await AsyncStorage.getItem(USER_ID_KEY);
       return userId ? parseInt(userId, 10) : null;
     } catch (error) {
-      console.error('Error getting user ID:', error);
+      console.error("Error getting user ID:", error);
       return null;
     }
   },
@@ -63,11 +63,10 @@ const authStorage = {
       const token = await AsyncStorage.getItem(AUTH_TOKEN_KEY);
       return !!token;
     } catch (error) {
-      console.error('Error checking login status:', error);
+      console.error("Error checking login status:", error);
       return false;
     }
   },
 };
 
 export default authStorage;
-

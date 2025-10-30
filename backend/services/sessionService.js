@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 const { UserSession } = require('../models');
 const passwordUtils = require('../utils/password');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET =
+  process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30d'; // 30 days
 
 const sessionService = {
@@ -32,12 +32,16 @@ const sessionService = {
       const expiresAt = new Date(decoded.exp * 1000);
 
       // Get user agent and IP from request
-      const userAgent = req?.get?.('user-agent') || req?.headers?.['user-agent'] || null;
-      const ipAddress = req?.ip || 
-                       req?.connection?.remoteAddress || 
-                       req?.socket?.remoteAddress ||
-                       (req?.headers && (req.headers['x-forwarded-for']?.split(',')[0] || req.headers['x-real-ip'])) ||
-                       null;
+      const userAgent =
+        req?.get?.('user-agent') || req?.headers?.['user-agent'] || null;
+      const ipAddress =
+        req?.ip ||
+        req?.connection?.remoteAddress ||
+        req?.socket?.remoteAddress ||
+        (req?.headers &&
+          (req.headers['x-forwarded-for']?.split(',')[0] ||
+            req.headers['x-real-ip'])) ||
+        null;
 
       // Create session in database
       const session = await UserSession.create({
@@ -127,4 +131,3 @@ const sessionService = {
 };
 
 module.exports = sessionService;
-

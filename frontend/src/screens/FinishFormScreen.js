@@ -1,17 +1,23 @@
-import React from 'react';
-import { View, Text, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
+import React from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
 
 const FinishFormScreen = ({ navigation }) => {
   const handleNavigateToWelcome = () => {
-    navigation.navigate('Welcome');
+    navigation.navigate("Welcome");
   };
 
   return (
-    <SafeAreaView 
+    <SafeAreaView
       className="flex-1 bg-white"
       style={{
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: "#ffffff",
       }}
     >
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
@@ -19,8 +25,8 @@ const FinishFormScreen = ({ navigation }) => {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
           paddingHorizontal: 24,
         }}
       >
@@ -28,10 +34,10 @@ const FinishFormScreen = ({ navigation }) => {
         <Text
           style={{
             fontSize: 36,
-            fontWeight: '700',
-            color: '#111827',
+            fontWeight: "700",
+            color: "#111827",
             marginBottom: 48,
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           ¡Todo pronto!
@@ -43,10 +49,10 @@ const FinishFormScreen = ({ navigation }) => {
             width: 56,
             height: 56,
             borderRadius: 28,
-            backgroundColor: '#3b82f6',
-            justifyContent: 'center',
-            alignItems: 'center',
-            shadowColor: '#000',
+            backgroundColor: "#3b82f6",
+            justifyContent: "center",
+            alignItems: "center",
+            shadowColor: "#000",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
@@ -58,8 +64,8 @@ const FinishFormScreen = ({ navigation }) => {
           <Text
             style={{
               fontSize: 32,
-              color: '#ffffff',
-              fontWeight: '700',
+              color: "#ffffff",
+              fontWeight: "700",
             }}
           >
             →
@@ -71,4 +77,3 @@ const FinishFormScreen = ({ navigation }) => {
 };
 
 export default FinishFormScreen;
-

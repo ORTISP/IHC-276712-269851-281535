@@ -1,20 +1,27 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Modal, ScrollView } from "react-native";
 
-const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femenino', 'Otro'], className, style }) => {
+const GenderSelector = ({
+  label,
+  value,
+  onChange,
+  options = ["Masculino", "Femenino", "Otro"],
+  className,
+  style,
+}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const placeholder = 'Seleccionar género';
+  const placeholder = "Seleccionar género";
 
   return (
-    <View className={`mb-4 ${className || ''}`} style={style}>
+    <View className={`mb-4 ${className || ""}`} style={style}>
       {label && (
         <Text
           className="text-base font-semibold text-gray-900 mb-2"
           style={{
             fontSize: 16,
-            fontWeight: '600',
-            color: '#111827',
+            fontWeight: "600",
+            color: "#111827",
             marginBottom: 8,
           }}
         >
@@ -24,25 +31,27 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
       <TouchableOpacity
         className="flex-row justify-between items-center border border-gray-300 rounded-lg px-4 py-2 bg-white"
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           borderWidth: 1,
-          borderColor: '#d1d5db',
+          borderColor: "#d1d5db",
           borderRadius: 8,
           paddingHorizontal: 16,
           paddingVertical: 8,
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
         }}
         onPress={() => setIsModalVisible(true)}
         activeOpacity={0.8}
       >
         <Text
-          className={`text-base flex-1 ${!value ? 'text-gray-500' : 'text-gray-900'}`}
+          className={`text-base flex-1 ${
+            !value ? "text-gray-500" : "text-gray-900"
+          }`}
           style={{
             fontSize: 16,
             flex: 1,
-            color: !value ? '#6b7280' : '#111827',
+            color: !value ? "#6b7280" : "#111827",
           }}
         >
           {value || placeholder}
@@ -51,7 +60,7 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
           className="text-gray-500"
           style={{
             fontSize: 12,
-            color: '#6b7280',
+            color: "#6b7280",
           }}
         >
           ▼
@@ -68,41 +77,41 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
           className="flex-1 bg-black/50 justify-end"
           style={{
             flex: 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            justifyContent: 'flex-end',
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            justifyContent: "flex-end",
           }}
         >
           <View
             className="bg-white rounded-t-3xl max-h-[70%] pb-6"
             style={{
-              backgroundColor: '#ffffff',
+              backgroundColor: "#ffffff",
               borderTopLeftRadius: 24,
               borderTopRightRadius: 24,
-              maxHeight: '70%',
+              maxHeight: "70%",
               paddingBottom: 24,
             }}
           >
             <View
               className="flex-row justify-between items-center px-6 py-4 border-b border-gray-200"
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
                 paddingHorizontal: 24,
                 paddingVertical: 16,
                 borderBottomWidth: 1,
-                borderBottomColor: '#e5e7eb',
+                borderBottomColor: "#e5e7eb",
               }}
             >
               <Text
                 className="text-2xl font-semibold text-gray-900"
                 style={{
                   fontSize: 20,
-                  fontWeight: '600',
-                  color: '#111827',
+                  fontWeight: "600",
+                  color: "#111827",
                 }}
               >
-                {label || 'Seleccionar género'}
+                {label || "Seleccionar género"}
               </Text>
               <TouchableOpacity
                 onPress={() => setIsModalVisible(false)}
@@ -115,8 +124,8 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
                   className="text-base text-blue-500 font-semibold"
                   style={{
                     fontSize: 16,
-                    color: '#3b82f6',
-                    fontWeight: '600',
+                    color: "#3b82f6",
+                    fontWeight: "600",
                   }}
                 >
                   Cerrar
@@ -139,8 +148,8 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
                     key={index}
                     className={`py-4 px-4 rounded-lg mb-2 border ${
                       isSelected
-                        ? 'bg-blue-500 border-blue-500'
-                        : 'bg-white border-gray-200'
+                        ? "bg-blue-500 border-blue-500"
+                        : "bg-white border-gray-200"
                     }`}
                     style={[
                       {
@@ -152,12 +161,12 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
                       },
                       isSelected
                         ? {
-                            backgroundColor: '#3b82f6',
-                            borderColor: '#3b82f6',
+                            backgroundColor: "#3b82f6",
+                            borderColor: "#3b82f6",
                           }
                         : {
-                            backgroundColor: '#ffffff',
-                            borderColor: '#e5e7eb',
+                            backgroundColor: "#ffffff",
+                            borderColor: "#e5e7eb",
                           },
                     ]}
                     onPress={() => {
@@ -169,13 +178,13 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
                     <Text
                       className={`text-base ${
                         isSelected
-                          ? 'text-white font-semibold'
-                          : 'text-gray-900'
+                          ? "text-white font-semibold"
+                          : "text-gray-900"
                       }`}
                       style={{
                         fontSize: 16,
-                        color: isSelected ? '#ffffff' : '#111827',
-                        fontWeight: isSelected ? '600' : '400',
+                        color: isSelected ? "#ffffff" : "#111827",
+                        fontWeight: isSelected ? "600" : "400",
                       }}
                     >
                       {option}
@@ -192,4 +201,3 @@ const GenderSelector = ({ label, value, onChange, options = ['Masculino', 'Femen
 };
 
 export default GenderSelector;
-
