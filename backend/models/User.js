@@ -38,6 +38,29 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: 'prefer-not-to-say',
     },
+    diet_type: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      defaultValue: null,
+      field: 'diet_type',
+    },
+    restrictions: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+      defaultValue: null,
+    },
+    nutritional_objective: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      defaultValue: null,
+      field: 'nutritional_objective',
+    },
+    private_recipes: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+      field: 'private_recipes',
+    },
     is_verified: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

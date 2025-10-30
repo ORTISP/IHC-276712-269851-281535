@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { theme } from '../styles/theme';
-import Button from '../components/shared/Button';
-import Input from '../components/shared/Input';
-import Card from '../components/shared/Card';
-import Toast from '../components/shared/Toast';
-import AuthService from '../services/authService';
+import React, { useState } from "react";
+import { View, Text, SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { theme } from "../styles/theme";
+import Button from "../components/shared/Button";
+import Input from "../components/shared/Input";
+import Card from "../components/shared/Card";
+import Toast from "../components/shared/Toast";
+import AuthService from "../services/authService";
+import authStorage from "../services/authStorage";
 
 const RegisterScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('error');
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("error");
   const [isLoading, setIsLoading] = useState(false);
 
-  const showToast = (message, type = 'error') => {
+  const showToast = (message, type = "error") => {
     setToastMessage(message);
     setToastType(type);
     setToastVisible(true);
@@ -28,17 +29,26 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
-      showToast('Please fill in all fields');
+      showToast("Por favor complete todos los campos");
+      return;
+    }
+
+    // Basic email validation in frontend
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const trimmedEmail = email.trim().toLowerCase();
+
+    if (!emailRegex.test(trimmedEmail)) {
+      showToast("Por favor ingrese un correo electrónico válido");
       return;
     }
 
     if (password !== confirmPassword) {
-      showToast('Passwords do not match');
+      showToast("Las contraseñas no coinciden");
       return;
     }
 
     if (password.length < 6) {
-      showToast('Password must be at least 6 characters long');
+      showToast("La contraseña debe tener al menos 6 caracteres");
       return;
     }
 
@@ -47,38 +57,63 @@ const RegisterScreen = ({ navigation }) => {
     try {
       // Only send email and password - other fields will be added later
       const registrationData = {
-        email: email.trim().toLowerCase(),
+        email: trimmedEmail,
         password,
       };
 
       const response = await AuthService.register(registrationData);
 
       if (response.success) {
-        showToast('Account created successfully!', 'success');
+        // Save token and user ID for automatic login
+        if (response.data?.token) {
+          await authStorage.saveToken(response.data.token);
+        }
+        if (response.data?.user?.id) {
+          await authStorage.saveUserId(response.data.user.id);
+        }
+
+        showToast("¡Cuenta creada exitosamente!", "success");
 
         // Clear form
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
 
-        // Navigate to login screen after a short delay
+        // Navigate to form screen with user ID after a short delay
         setTimeout(() => {
-          navigation.navigate('Login');
+          navigation.navigate("Form", {
+            userId: response.data?.user?.id,
+          });
         }, 2000);
       } else {
-        showToast(response.error || 'Registration failed');
+        showToast(response.error || "Error al registrar");
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error("Registration error:", error);
 
-      if (error.message.includes('Validation failed')) {
-        showToast('Please check your email format');
-      } else if (error.message.includes('Password is too weak')) {
-        showToast('Password is too weak. Please use a stronger password');
-      } else if (error.message.includes('already exists')) {
-        showToast('An account with this email already exists');
+      // Handle validation errors with specific messages
+      if (
+        error.details &&
+        Array.isArray(error.details) &&
+        error.details.length > 0
+      ) {
+        // Show the first validation error message
+        showToast(error.details[0]);
+      } else if (error.message.includes("Validation failed")) {
+        showToast("Por favor verifique los datos ingresados");
+      } else if (error.message.includes("Password is too weak")) {
+        showToast(
+          "La contraseña es demasiado débil. Por favor use una contraseña más fuerte"
+        );
+      } else if (
+        error.message.includes("already exists") ||
+        error.message.includes("duplicate")
+      ) {
+        showToast("Ya existe una cuenta con este correo electrónico");
       } else {
-        showToast('Registration failed. Please try again');
+        showToast(
+          error.message || "Error al registrar. Por favor intente nuevamente"
+        );
       }
     } finally {
       setIsLoading(false);
@@ -97,21 +132,21 @@ const RegisterScreen = ({ navigation }) => {
         {/* Header */}
         <View style={styles.header}>
           <Button
-            title="← Back"
+            title="← Atrás"
             onPress={handleBackToLogin}
             variant="secondary"
             size="sm"
             style={styles.backButton}
           />
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Sign up for a new account</Text>
+          <Text style={styles.title}>Crear Cuenta</Text>
+          <Text style={styles.subtitle}>Regístrate para una nueva cuenta</Text>
         </View>
 
         {/* Registration Form */}
         <Card style={styles.form}>
           <Input
-            label="Email"
-            placeholder="Enter your email"
+            label="Correo electrónico"
+            placeholder="Ingresa tu correo electrónico"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -120,8 +155,8 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <Input
-            label="Password"
-            placeholder="Enter your password"
+            label="Contraseña"
+            placeholder="Ingresa tu contraseña"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -130,8 +165,8 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <Input
-            label="Confirm Password"
-            placeholder="Confirm your password"
+            label="Confirmar Contraseña"
+            placeholder="Confirma tu contraseña"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             secureTextEntry
@@ -140,7 +175,7 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <Button
-            title={isLoading ? 'Creating Account...' : 'Create Account'}
+            title={isLoading ? "Creando Cuenta..." : "Crear Cuenta"}
             onPress={handleRegister}
             variant="primary"
             size="lg"
@@ -149,8 +184,8 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <Button
-            title="Already have an account? Login"
-            onPress={() => navigation.navigate('Login')}
+            title="¿Ya tienes una cuenta? Inicia sesión"
+            onPress={() => navigation.navigate("Login")}
             variant="secondary"
             size="md"
             style={styles.loginButton}
@@ -182,7 +217,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.xl,
   },
   backButton: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginBottom: theme.spacing.lg,
   },
   title: {

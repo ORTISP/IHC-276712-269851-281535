@@ -1,6 +1,5 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { theme } from '../../styles/theme';
+import React from "react";
+import { View, Text, TextInput } from "react-native";
 
 const Input = ({
   label,
@@ -8,47 +7,45 @@ const Input = ({
   onChangeText,
   placeholder,
   secureTextEntry = false,
-  keyboardType = 'default',
+  keyboardType = "default",
+  className,
   style,
   ...props
 }) => {
   return (
-    <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
+    <View className="mb-4">
+      {label && (
+        <Text className="text-base font-semibold text-gray-900 mb-2">
+          {label}
+        </Text>
+      )}
       <TextInput
-        style={[styles.input, style]}
+        className={`border border-gray-300 rounded-lg px-4 py-2 text-base bg-white text-gray-900 ${
+          className || ""
+        }`}
+        style={[
+          {
+            borderWidth: 1,
+            borderColor: "#d1d5db",
+            borderRadius: 8,
+            paddingHorizontal: 16,
+            paddingVertical: 8,
+            fontSize: 16,
+            backgroundColor: "#ffffff",
+            color: "#111827",
+          },
+          style,
+        ]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
-        placeholderTextColor={theme.colors.gray[500]}
+        placeholderTextColor="#6b7280"
         {...props}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: theme.spacing.md,
-  },
-  label: {
-    ...theme.typography.body,
-    fontWeight: '600',
-    color: theme.colors.dark,
-    marginBottom: theme.spacing.sm,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: theme.colors.gray[300],
-    borderRadius: theme.borderRadius.md,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-    fontSize: 16,
-    backgroundColor: theme.colors.white,
-    color: theme.colors.dark,
-  },
-});
 
 export default Input;

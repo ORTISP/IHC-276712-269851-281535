@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { theme } from '../styles/theme';
-import Button from '../components/shared/Button';
-import Input from '../components/shared/Input';
-import Card from '../components/shared/Card';
-import Toast from '../components/shared/Toast';
+import React, { useState } from "react";
+import { View, Text, SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { theme } from "../styles/theme";
+import Button from "../components/shared/Button";
+import Input from "../components/shared/Input";
+import Card from "../components/shared/Card";
+import Toast from "../components/shared/Toast";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('error');
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("error");
 
-  const showToast = (message, type = 'error') => {
+  const showToast = (message, type = "error") => {
     setToastMessage(message);
     setToastType(type);
     setToastVisible(true);
@@ -25,15 +25,15 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     if (!email || !password) {
-      showToast('Please fill in all fields');
+      showToast("Please fill in all fields");
       return;
     }
 
     // TODO: Implement actual login logic with backend
-    console.log('Login attempt:', { email, password });
+    console.log("Login attempt:", { email, password });
     showToast(
-      'Login functionality will be implemented with backend',
-      'success',
+      "Login functionality will be implemented with backend",
+      "success"
     );
   };
 
@@ -91,7 +91,7 @@ const LoginScreen = ({ navigation }) => {
 
           <Button
             title="Create Account"
-            onPress={() => navigation.navigate('Register')}
+            onPress={() => navigation.navigate("Register")}
             variant="secondary"
             size="md"
             style={styles.registerButton}
@@ -101,8 +101,8 @@ const LoginScreen = ({ navigation }) => {
             title="Forgot Password?"
             onPress={() =>
               showToast(
-                'Forgot password functionality will be implemented',
-                'info',
+                "Forgot password functionality will be implemented",
+                "info"
               )
             }
             variant="secondary"
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.xl,
   },
   backButton: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginBottom: theme.spacing.lg,
   },
   title: {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.sm,
   },
   forgotPassword: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });
 

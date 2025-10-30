@@ -104,19 +104,45 @@ const authController = {
         createdAt: new Date().toISOString(),
       };
 
-      const token = 'jwt-token-placeholder';
+      // Create user session
+      const sessionService = require('../services/sessionService');
+      const { User } = require('../models');
+      const userWithId = await User.findByPk(result.user.id);
+      const session = await sessionService.createSession(userWithId, req);
 
       res.status(201).json({
         success: true,
         message: 'User registered successfully',
         data: {
-          user,
-          token,
-          passwordStrength: passwordStrength.strength,
+          user: result.user,
+          token: session.token,
+          sessionId: session.sessionId,
+          expiresAt: session.expiresAt,
+          passwordStrength: result.passwordStrength,
         },
       });
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('❌ Registration error:', error);
+
+      // Handle specific error cases
+      if (error.message.includes('already exists')) {
+        return res.status(409).json({
+          success: false,
+          error: error.message || 'User with this email already exists',
+        });
+      }
+
+      if (
+        error.message.includes('Validation failed') ||
+        error.message.includes('Password is too weak')
+      ) {
+        return res.status(400).json({
+          success: false,
+          error: error.message,
+        });
+      }
+
+      // Default to 500 for unexpected errors
       res.status(500).json({
         success: false,
         error: 'Internal server error during registration',

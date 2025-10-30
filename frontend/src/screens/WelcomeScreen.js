@@ -1,16 +1,48 @@
-import React from 'react';
-import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { theme } from '../styles/theme';
-import Button from '../components/shared/Button';
-import Card from '../components/shared/Card';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { theme } from "../styles/theme";
+import Button from "../components/shared/Button";
+import Card from "../components/shared/Card";
+import authStorage from "../services/authStorage";
 
 const WelcomeScreen = ({ navigation }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    checkAuthStatus();
+
+    // Listener para cuando se vuelve a la pantalla
+    const unsubscribe = navigation.addListener("focus", () => {
+      checkAuthStatus();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const checkAuthStatus = async () => {
+    const loggedIn = await authStorage.isLoggedIn();
+    setIsLoggedIn(loggedIn);
+  };
+
   const handleGetStarted = () => {
-    console.log('Get Started pressed');
+    console.log("Get Started pressed");
   };
 
   const handleLogin = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
+  };
+
+  const handleUserButton = () => {
+    // TODO: Navegar a pantalla de perfil o menú de usuario
+    // Por ahora, navegar a Login para ver el estado
+    navigation.navigate("Login");
   };
 
   return (
@@ -21,12 +53,24 @@ const WelcomeScreen = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <Text style={styles.title}>Welcome!</Text>
-          <Button
-            title="Login"
-            onPress={handleLogin}
-            variant="primary"
-            size="sm"
-          />
+          {isLoggedIn ? (
+            <TouchableOpacity
+              onPress={handleUserButton}
+              style={styles.userButton}
+              activeOpacity={0.7}
+            >
+              <View style={styles.userIconContainer}>
+                <Text style={styles.userIcon}>👤</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <Button
+              title="Login"
+              onPress={handleLogin}
+              variant="primary"
+              size="sm"
+            />
+          )}
         </View>
         <Text style={styles.subtitle}>Your mobile app is ready to use</Text>
       </View>
@@ -72,9 +116,9 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.gray[200],
   },
   headerContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: theme.spacing.sm,
   },
   title: {
@@ -92,7 +136,7 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.lg,
   },
   mainCard: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: theme.spacing.xl,
   },
   iconContainer: {
@@ -100,8 +144,8 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     backgroundColor: theme.colors.gray[100],
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: theme.spacing.lg,
     ...theme.shadows.md,
   },
@@ -111,7 +155,7 @@ const styles = StyleSheet.create({
   description: {
     ...theme.typography.body,
     color: theme.colors.gray[700],
-    textAlign: 'center',
+    textAlign: "center",
   },
   actions: {
     gap: theme.spacing.md,
@@ -121,6 +165,24 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     // Additional styles if needed
+  },
+  userButton: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  userIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: theme.colors.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    ...theme.shadows.sm,
+  },
+  userIcon: {
+    fontSize: 20,
   },
 });
 
