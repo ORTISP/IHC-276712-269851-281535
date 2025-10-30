@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TextInput } from 'react-native';
+import React from "react";
+import { View, Text, TextInput } from "react-native";
 
 const Input = ({
   label,
@@ -7,26 +7,32 @@ const Input = ({
   onChangeText,
   placeholder,
   secureTextEntry = false,
-  keyboardType = 'default',
+  keyboardType = "default",
   className,
   style,
   ...props
 }) => {
   return (
     <View className="mb-4">
-      {label && <Text className="text-base font-semibold text-gray-900 mb-2">{label}</Text>}
+      {label && (
+        <Text className="text-base font-semibold text-gray-900 mb-2">
+          {label}
+        </Text>
+      )}
       <TextInput
-        className={`border border-gray-300 rounded-lg px-4 py-2 text-base bg-white text-gray-900 ${className || ''}`}
+        className={`border border-gray-300 rounded-lg px-4 py-2 text-base bg-white text-gray-900 ${
+          className || ""
+        }`}
         style={[
           {
             borderWidth: 1,
-            borderColor: '#d1d5db',
+            borderColor: "#d1d5db",
             borderRadius: 8,
             paddingHorizontal: 16,
             paddingVertical: 8,
             fontSize: 16,
-            backgroundColor: '#ffffff',
-            color: '#111827',
+            backgroundColor: "#ffffff",
+            color: "#111827",
           },
           style,
         ]}

@@ -1,8 +1,7 @@
-import React from 'react';
-import Card from '../../components/shared/Card';
-import SelectField from '../../components/formComponents/SelectField';
-import MultiSelectField from '../../components/formComponents/MultiSelectField';
-import ToggleButton from '../../components/formComponents/ToggleButton';
+import Card from "../../components/shared/Card";
+import SelectField from "../../components/formComponents/SelectField";
+import MultiSelectField from "../../components/formComponents/MultiSelectField";
+import ToggleButton from "../../components/formComponents/ToggleButton";
 
 const FormStep2 = ({
   dietType,
@@ -53,4 +52,3 @@ const FormStep2 = ({
 };
 
 export default FormStep2;
-

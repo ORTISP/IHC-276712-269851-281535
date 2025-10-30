@@ -270,16 +270,23 @@ const validation = {
 
     // Validate date of birth if provided
     // For updates, we validate format and basic sanity checks but not strict age requirements
-    if (updateData.dateOfBirth !== undefined && updateData.dateOfBirth !== null) {
+    if (
+      updateData.dateOfBirth !== undefined &&
+      updateData.dateOfBirth !== null
+    ) {
       if (typeof updateData.dateOfBirth !== 'string') {
-        errors.push('La fecha de nacimiento debe ser un texto en formato YYYY-MM-DD');
+        errors.push(
+          'La fecha de nacimiento debe ser un texto en formato YYYY-MM-DD'
+        );
       } else {
         const date = new Date(updateData.dateOfBirth);
         const today = new Date();
 
         // Check if date is valid
         if (isNaN(date.getTime())) {
-          errors.push('Por favor proporciona una fecha válida (formato YYYY-MM-DD)');
+          errors.push(
+            'Por favor proporciona una fecha válida (formato YYYY-MM-DD)'
+          );
         } else if (date > today) {
           errors.push('La fecha de nacimiento no puede ser en el futuro');
         } else {
@@ -335,7 +342,9 @@ const validation = {
       } else {
         const trimmed = updateData.nutritionalObjective.trim();
         if (trimmed.length > 100) {
-          errors.push('El objetivo nutricional debe tener menos de 100 caracteres');
+          errors.push(
+            'El objetivo nutricional debe tener menos de 100 caracteres'
+          );
         } else if (trimmed.length > 0) {
           sanitizedData.nutritionalObjective = trimmed;
         }

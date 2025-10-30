@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from "react-native";
 
 const NextStepButton = ({ onPress, currentStep, totalSteps }) => {
   if (currentStep > totalSteps) {
@@ -10,7 +9,7 @@ const NextStepButton = ({ onPress, currentStep, totalSteps }) => {
     <View
       className="items-center mt-8 mb-6"
       style={{
-        alignItems: 'center',
+        alignItems: "center",
         marginTop: 32,
         marginBottom: 24,
       }}
@@ -21,10 +20,10 @@ const NextStepButton = ({ onPress, currentStep, totalSteps }) => {
           width: 56,
           height: 56,
           borderRadius: 28,
-          backgroundColor: '#3b82f6',
-          justifyContent: 'center',
-          alignItems: 'center',
-          shadowColor: '#000',
+          backgroundColor: "#3b82f6",
+          justifyContent: "center",
+          alignItems: "center",
+          shadowColor: "#000",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.25,
           shadowRadius: 3.84,
@@ -37,8 +36,8 @@ const NextStepButton = ({ onPress, currentStep, totalSteps }) => {
           className="text-3xl text-white font-bold"
           style={{
             fontSize: 32,
-            color: '#ffffff',
-            fontWeight: '700',
+            color: "#ffffff",
+            fontWeight: "700",
           }}
         >
           →
@@ -49,4 +48,3 @@ const NextStepButton = ({ onPress, currentStep, totalSteps }) => {
 };
 
 export default NextStepButton;
-

@@ -1,32 +1,52 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import React from "react";
+import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 
-const SelectField = ({ label, value, options = [], onChange, placeholder = 'Seleccionar...', className, style }) => {
+const SelectField = ({
+  label,
+  value,
+  options = [],
+  onChange,
+  placeholder = "Seleccionar...",
+  className,
+  style,
+}) => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-  const selectedOption = options.find(opt => opt.value === value || opt === value);
+  const selectedOption = options.find(
+    (opt) => opt.value === value || opt === value
+  );
 
   return (
-    <View className={`mb-4 ${className || ''}`} style={style}>
-      {label && <Text className="text-base font-semibold text-gray-900 mb-2">{label}</Text>}
+    <View className={`mb-4 ${className || ""}`} style={style}>
+      {label && (
+        <Text className="text-base font-semibold text-gray-900 mb-2">
+          {label}
+        </Text>
+      )}
       <TouchableOpacity
         className="flex-row justify-between items-center border border-gray-300 rounded-lg px-4 py-2 bg-white"
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           borderWidth: 1,
-          borderColor: '#d1d5db',
+          borderColor: "#d1d5db",
           borderRadius: 8,
           paddingHorizontal: 16,
           paddingVertical: 8,
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
         }}
         onPress={() => setIsModalVisible(true)}
         activeOpacity={0.8}
       >
-        <Text className={`text-base flex-1 ${!value ? 'text-gray-500' : 'text-gray-900'}`}>
-          {selectedOption ? (selectedOption.label || selectedOption) : placeholder}
+        <Text
+          className={`text-base flex-1 ${
+            !value ? "text-gray-500" : "text-gray-900"
+          }`}
+        >
+          {selectedOption
+            ? selectedOption.label || selectedOption
+            : placeholder}
         </Text>
         <Text className="text-gray-500">▼</Text>
       </TouchableOpacity>
@@ -41,33 +61,38 @@ const SelectField = ({ label, value, options = [], onChange, placeholder = 'Sele
           className="flex-1 bg-black/50 justify-end"
           style={{
             flex: 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            justifyContent: 'flex-end',
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            justifyContent: "flex-end",
           }}
         >
           <View
             className="bg-white rounded-t-3xl max-h-[70%] pb-6"
             style={{
-              backgroundColor: '#ffffff',
+              backgroundColor: "#ffffff",
               borderTopLeftRadius: 24,
               borderTopRightRadius: 24,
-              maxHeight: '70%',
+              maxHeight: "70%",
               paddingBottom: 24,
             }}
           >
             <View className="flex-row justify-between items-center px-6 py-4 border-b border-gray-200">
-              <Text className="text-2xl font-semibold text-gray-900">{label}</Text>
+              <Text className="text-2xl font-semibold text-gray-900">
+                {label}
+              </Text>
               <TouchableOpacity
                 onPress={() => setIsModalVisible(false)}
                 className="p-2"
               >
-                <Text className="text-base text-blue-500 font-semibold">Cerrar</Text>
+                <Text className="text-base text-blue-500 font-semibold">
+                  Cerrar
+                </Text>
               </TouchableOpacity>
             </View>
 
             <ScrollView className="px-6 pt-4">
               {options.map((option, index) => {
-                const optionValue = option.value !== undefined ? option.value : option;
+                const optionValue =
+                  option.value !== undefined ? option.value : option;
                 const optionLabel = option.label || option;
                 const isSelected = value === optionValue || value === option;
 
@@ -76,8 +101,8 @@ const SelectField = ({ label, value, options = [], onChange, placeholder = 'Sele
                     key={index}
                     className={`py-4 px-4 rounded-lg mb-2 border ${
                       isSelected
-                        ? 'bg-blue-500 border-blue-500'
-                        : 'bg-white border-gray-200'
+                        ? "bg-blue-500 border-blue-500"
+                        : "bg-white border-gray-200"
                     }`}
                     style={[
                       {
@@ -89,12 +114,12 @@ const SelectField = ({ label, value, options = [], onChange, placeholder = 'Sele
                       },
                       isSelected
                         ? {
-                            backgroundColor: '#3b82f6',
-                            borderColor: '#3b82f6',
+                            backgroundColor: "#3b82f6",
+                            borderColor: "#3b82f6",
                           }
                         : {
-                            backgroundColor: '#ffffff',
-                            borderColor: '#e5e7eb',
+                            backgroundColor: "#ffffff",
+                            borderColor: "#e5e7eb",
                           },
                     ]}
                     onPress={() => {
@@ -103,11 +128,13 @@ const SelectField = ({ label, value, options = [], onChange, placeholder = 'Sele
                     }}
                     activeOpacity={0.8}
                   >
-                    <Text className={`text-base ${
-                      isSelected
-                        ? 'text-white font-semibold'
-                        : 'text-gray-900'
-                    }`}>
+                    <Text
+                      className={`text-base ${
+                        isSelected
+                          ? "text-white font-semibold"
+                          : "text-gray-900"
+                      }`}
+                    >
                       {optionLabel}
                     </Text>
                   </TouchableOpacity>
@@ -122,4 +149,3 @@ const SelectField = ({ label, value, options = [], onChange, placeholder = 'Sele
 };
 
 export default SelectField;
-

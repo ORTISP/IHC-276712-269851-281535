@@ -1,8 +1,8 @@
-import ApiService from './baseApi';
+import ApiService from "./baseApi";
 
 class UserService {
   static async getAllUsers() {
-    return ApiService.get('/users');
+    return ApiService.get("/users");
   }
 
   static async getUserById(id) {
@@ -10,7 +10,7 @@ class UserService {
   }
 
   static async createUser(userData) {
-    return ApiService.post('/users', userData);
+    return ApiService.post("/users", userData);
   }
 
   static async updateUser(id, userData) {
@@ -22,11 +22,11 @@ class UserService {
   }
 
   static async updateProfile(userData) {
-    return ApiService.put('/users/profile', userData);
+    return ApiService.put("/users/profile", userData);
   }
 
   static async uploadAvatar(imageData) {
-    return ApiService.post('/users/avatar', imageData);
+    return ApiService.post("/users/avatar", imageData);
   }
 
   static async searchUsers(query) {

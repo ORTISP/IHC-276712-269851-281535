@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
-import FormService from '../../services/formService';
+import { useState, useEffect } from "react";
+import FormService from "../../services/formService";
 
 export const useFormData = (currentStep) => {
   // Step 1 form data
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [gender, setGender] = useState('');
+  const [gender, setGender] = useState("");
 
   // Step 2 form data
-  const [dietType, setDietType] = useState('');
+  const [dietType, setDietType] = useState("");
   const [restrictions, setRestrictions] = useState([]);
-  const [nutritionalObjective, setNutritionalObjective] = useState('');
+  const [nutritionalObjective, setNutritionalObjective] = useState("");
   const [privateRecipes, setPrivateRecipes] = useState(false);
 
   // Options from database
@@ -33,7 +33,7 @@ export const useFormData = (currentStep) => {
         setRestrictionsOptions(restrictionsData);
         setNutritionalObjectives(objectives);
       } catch (error) {
-        console.error('Error loading form options:', error);
+        console.error("Error loading form options:", error);
       } finally {
         setLoading(false);
       }
@@ -68,4 +68,3 @@ export const useFormData = (currentStep) => {
     loading,
   };
 };
-

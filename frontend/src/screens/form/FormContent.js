@@ -1,17 +1,17 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import FormStep1 from './FormStep1';
-import FormStep2 from './FormStep2';
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import FormStep1 from "./FormStep1";
+import FormStep2 from "./FormStep2";
 
-const FormContent = ({ 
-  currentStep, 
+const FormContent = ({
+  currentStep,
   formData,
   formActions,
   onWhyWeAskPress,
 }) => {
   const stepTitles = {
-    1: { title: 'Información Personal', subtitle: 'Cuéntanos sobre ti' },
-    2: { title: 'Detalles Adicionales', subtitle: 'Completa tu perfil' },
+    1: { title: "Información Personal", subtitle: "Cuéntanos sobre ti" },
+    2: { title: "Detalles Adicionales", subtitle: "Completa tu perfil" },
   };
 
   const currentTitle = stepTitles[currentStep];
@@ -57,17 +57,17 @@ const FormContent = ({
         className="mb-8"
         style={{
           marginBottom: 32,
-          alignItems: 'center',
+          alignItems: "center",
         }}
       >
         <Text
           className="text-3xl font-bold text-gray-900 mb-2"
           style={{
             fontSize: 32,
-            fontWeight: '700',
-            color: '#111827',
+            fontWeight: "700",
+            color: "#111827",
             marginBottom: 8,
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           {currentTitle?.title}
@@ -76,8 +76,8 @@ const FormContent = ({
           className="text-base text-gray-600"
           style={{
             fontSize: 16,
-            color: '#4b5563',
-            textAlign: 'center',
+            color: "#4b5563",
+            textAlign: "center",
           }}
         >
           {currentTitle?.subtitle}
@@ -90,7 +90,7 @@ const FormContent = ({
       {/* Why we ask button */}
       <View
         style={{
-          alignItems: 'center',
+          alignItems: "center",
           marginTop: 16,
           marginBottom: 8,
         }}
@@ -106,9 +106,9 @@ const FormContent = ({
           <Text
             style={{
               fontSize: 14,
-              color: '#3b82f6',
-              fontWeight: '500',
-              textAlign: 'center',
+              color: "#3b82f6",
+              fontWeight: "500",
+              textAlign: "center",
             }}
           >
             ¿Por qué pedimos esto?
@@ -120,4 +120,3 @@ const FormContent = ({
 };
 
 export default FormContent;
-

@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { theme } from '../styles/theme';
-import Button from '../components/shared/Button';
-import Input from '../components/shared/Input';
-import Card from '../components/shared/Card';
-import Toast from '../components/shared/Toast';
-import AuthService from '../services/authService';
-import authStorage from '../services/authStorage';
+import React, { useState } from "react";
+import { View, Text, SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { theme } from "../styles/theme";
+import Button from "../components/shared/Button";
+import Input from "../components/shared/Input";
+import Card from "../components/shared/Card";
+import Toast from "../components/shared/Toast";
+import AuthService from "../services/authService";
+import authStorage from "../services/authStorage";
 
 const RegisterScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('error');
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("error");
   const [isLoading, setIsLoading] = useState(false);
 
-  const showToast = (message, type = 'error') => {
+  const showToast = (message, type = "error") => {
     setToastMessage(message);
     setToastType(type);
     setToastVisible(true);
@@ -29,26 +29,26 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
-      showToast('Por favor complete todos los campos');
+      showToast("Por favor complete todos los campos");
       return;
     }
 
     // Basic email validation in frontend
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const trimmedEmail = email.trim().toLowerCase();
-    
+
     if (!emailRegex.test(trimmedEmail)) {
-      showToast('Por favor ingrese un correo electrónico válido');
+      showToast("Por favor ingrese un correo electrónico válido");
       return;
     }
 
     if (password !== confirmPassword) {
-      showToast('Las contraseñas no coinciden');
+      showToast("Las contraseñas no coinciden");
       return;
     }
 
     if (password.length < 6) {
-      showToast('La contraseña debe tener al menos 6 caracteres');
+      showToast("La contraseña debe tener al menos 6 caracteres");
       return;
     }
 
@@ -72,37 +72,48 @@ const RegisterScreen = ({ navigation }) => {
           await authStorage.saveUserId(response.data.user.id);
         }
 
-        showToast('¡Cuenta creada exitosamente!', 'success');
+        showToast("¡Cuenta creada exitosamente!", "success");
 
         // Clear form
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
 
         // Navigate to form screen with user ID after a short delay
         setTimeout(() => {
-          navigation.navigate('Form', {
+          navigation.navigate("Form", {
             userId: response.data?.user?.id,
           });
         }, 2000);
       } else {
-        showToast(response.error || 'Error al registrar');
+        showToast(response.error || "Error al registrar");
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error("Registration error:", error);
 
       // Handle validation errors with specific messages
-      if (error.details && Array.isArray(error.details) && error.details.length > 0) {
+      if (
+        error.details &&
+        Array.isArray(error.details) &&
+        error.details.length > 0
+      ) {
         // Show the first validation error message
         showToast(error.details[0]);
-      } else if (error.message.includes('Validation failed')) {
-        showToast('Por favor verifique los datos ingresados');
-      } else if (error.message.includes('Password is too weak')) {
-        showToast('La contraseña es demasiado débil. Por favor use una contraseña más fuerte');
-      } else if (error.message.includes('already exists') || error.message.includes('duplicate')) {
-        showToast('Ya existe una cuenta con este correo electrónico');
+      } else if (error.message.includes("Validation failed")) {
+        showToast("Por favor verifique los datos ingresados");
+      } else if (error.message.includes("Password is too weak")) {
+        showToast(
+          "La contraseña es demasiado débil. Por favor use una contraseña más fuerte"
+        );
+      } else if (
+        error.message.includes("already exists") ||
+        error.message.includes("duplicate")
+      ) {
+        showToast("Ya existe una cuenta con este correo electrónico");
       } else {
-        showToast(error.message || 'Error al registrar. Por favor intente nuevamente');
+        showToast(
+          error.message || "Error al registrar. Por favor intente nuevamente"
+        );
       }
     } finally {
       setIsLoading(false);
@@ -164,7 +175,7 @@ const RegisterScreen = ({ navigation }) => {
           />
 
           <Button
-            title={isLoading ? 'Creando Cuenta...' : 'Crear Cuenta'}
+            title={isLoading ? "Creando Cuenta..." : "Crear Cuenta"}
             onPress={handleRegister}
             variant="primary"
             size="lg"
@@ -174,7 +185,7 @@ const RegisterScreen = ({ navigation }) => {
 
           <Button
             title="¿Ya tienes una cuenta? Inicia sesión"
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate("Login")}
             variant="secondary"
             size="md"
             style={styles.loginButton}
@@ -206,7 +217,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.xl,
   },
   backButton: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginBottom: theme.spacing.lg,
   },
   title: {

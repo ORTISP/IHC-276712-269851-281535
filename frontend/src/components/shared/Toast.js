@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
-import { theme } from '../../styles/theme';
+import React, { useEffect, useRef } from "react";
+import { View, Text, StyleSheet, Animated } from "react-native";
+import { theme } from "../../styles/theme";
 
 const Toast = ({
   visible,
   message,
-  type = 'error',
+  type = "error",
   duration = 3000,
   onHide,
 }) => {
@@ -61,30 +61,30 @@ const Toast = ({
 
   const getToastStyle = () => {
     switch (type) {
-      case 'error':
+      case "error":
         return {
-          backgroundColor: theme.colors.error || '#FF4444',
-          borderLeftColor: '#CC0000',
+          backgroundColor: theme.colors.error || "#FF4444",
+          borderLeftColor: "#CC0000",
         };
-      case 'success':
+      case "success":
         return {
-          backgroundColor: theme.colors.success || '#00C851',
-          borderLeftColor: '#00A041',
+          backgroundColor: theme.colors.success || "#00C851",
+          borderLeftColor: "#00A041",
         };
-      case 'warning':
+      case "warning":
         return {
-          backgroundColor: theme.colors.warning || '#FF8800',
-          borderLeftColor: '#CC6600',
+          backgroundColor: theme.colors.warning || "#FF8800",
+          borderLeftColor: "#CC6600",
         };
-      case 'info':
+      case "info":
         return {
-          backgroundColor: theme.colors.info || '#33B5E5',
-          borderLeftColor: '#0099CC',
+          backgroundColor: theme.colors.info || "#33B5E5",
+          borderLeftColor: "#0099CC",
         };
       default:
         return {
-          backgroundColor: theme.colors.error || '#FF4444',
-          borderLeftColor: '#CC0000',
+          backgroundColor: theme.colors.error || "#FF4444",
+          borderLeftColor: "#CC0000",
         };
     }
   };
@@ -110,7 +110,7 @@ const Toast = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     top: 50,
     left: theme.spacing.md,
     right: theme.spacing.md,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   toast: {
     borderRadius: theme.borderRadius.md,
     borderLeftWidth: 4,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
   message: {
     ...theme.typography.body,
     color: theme.colors.white,
-    fontWeight: '500',
-    textAlign: 'center',
+    fontWeight: "500",
+    textAlign: "center",
   },
 });
 
