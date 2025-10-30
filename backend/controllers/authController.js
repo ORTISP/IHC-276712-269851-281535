@@ -99,15 +99,20 @@ const authController = {
         gender: validationResult.sanitizedData.gender,
       });
 
-      // TODO: Generate JWT token
-      const token = 'jwt-token-placeholder';
+      // Create user session
+      const sessionService = require('../services/sessionService');
+      const { User } = require('../models');
+      const userWithId = await User.findByPk(result.user.id);
+      const session = await sessionService.createSession(userWithId, req);
 
       res.status(201).json({
         success: true,
         message: 'User registered successfully',
         data: {
           user: result.user,
-          token,
+          token: session.token,
+          sessionId: session.sessionId,
+          expiresAt: session.expiresAt,
           passwordStrength: result.passwordStrength,
         },
       });
