@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../styles/theme";
 import Button from "../components/shared/Button";
 import Card from "../components/shared/Card";

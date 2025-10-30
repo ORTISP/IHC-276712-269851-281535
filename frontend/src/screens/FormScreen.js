@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, SafeAreaView, StatusBar, ScrollView } from "react-native";
+import { View, StatusBar, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "../components/shared/Toast";
 import FormHeader from "../components/formComponents/FormHeader";
 import FormDrawer from "./form/FormDrawer";

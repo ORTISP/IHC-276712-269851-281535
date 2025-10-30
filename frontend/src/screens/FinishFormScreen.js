@@ -2,10 +2,10 @@ import React from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   StatusBar,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const FinishFormScreen = ({ navigation }) => {
   const handleNavigateToWelcome = () => {
