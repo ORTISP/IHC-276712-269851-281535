@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { View, StatusBar, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Toast from "../components/shared/Toast";
-import FormHeader from "../components/formComponents/FormHeader";
-import FormDrawer from "./form/FormDrawer";
-import FormContent from "./form/FormContent";
-import NextStepButton from "./form/NextStepButton";
-import { useFormData } from "./form/useFormData";
-import { useFormSubmission } from "./form/useFormSubmission";
+import Toast from "../../components/shared/Toast";
+import FormHeader from "../../components/formComponents/FormHeader";
+import FormDrawer from "./FormDrawer";
+import FormContent from "./FormContent";
+import NextStepButton from "./NextStepButton";
+import { useFormData } from "./useFormData";
+import { useFormSubmission } from "./useFormSubmission";
 
 const FormScreen = ({ navigation, route }) => {
   const userId = route?.params?.userId;

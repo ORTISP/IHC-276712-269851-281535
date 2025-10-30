@@ -49,7 +49,7 @@ export default function MainMenu() {
   };
 
   const handleMenus = () => {
-    handlePress("Menús");
+    navigation.navigate("Menus");
   };
 
   return (

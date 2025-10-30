@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, StatusBar, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { theme } from "../styles/theme";
-import Button from "../components/shared/Button";
-import Input from "../components/shared/Input";
-import Card from "../components/shared/Card";
-import Toast from "../components/shared/Toast";
-import AuthService from "../services/authService";
-import authStorage from "../services/authStorage";
+import { theme } from "../../styles/theme";
+import Button from "../../components/shared/Button";
+import Input from "../../components/shared/Input";
+import Card from "../../components/shared/Card";
+import Toast from "../../components/shared/Toast";
+import AuthService from "../../services/authService";
+import authStorage from "../../services/authStorage";
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
