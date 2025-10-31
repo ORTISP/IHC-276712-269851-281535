@@ -1,44 +1,82 @@
-import { useState } from "react"
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from "react-native"
-import { Feather } from "@expo/vector-icons"
+"use client";
+
+import { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Modal,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from "@expo/vector-icons";
 
 export default function ViewMenuScreen({ navigation, route }) {
-  const [selectedDay, setSelectedDay] = useState("Lunes")
-  const menuName = route?.params?.menu?.name || "Mi Nuevo Menú"
+  const menuName = route?.params?.menu?.name || "Mi Nuevo Menú";
 
-  // Estructura: { 'LUN-0': [true, false, true, false], 'LUN-1': [false, false, false, false], ... }
-  const [cellStates, setCellStates] = useState({})
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCell, setSelectedCell] = useState(null);
 
-  const days = ["LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM"]
-  const tabs = ["Lunes", "Martes", "Miércoles"]
+  // Días abreviados
+  const days = ["L", "M", "X", "J", "V", "S", "D"];
+  const emojis = ["🍳", "🍽️", "🥤", "🌙"];
+  const mealKeys = ["breakfast", "lunch", "snack", "dinner"];
 
-  const emojis = ["🍳", "🍽️", "🥤", "🌙"]
+  // 🔹 Array de 28 objetos, uno por cada día
+  const [menuData, setMenuData] = useState([
+    { breakfast: true, lunch: true }, // Día 0
+    { snack: true },                  // Día 1
+    {},                               // Día 2
+    { dinner: true },                 // Día 3
+    { breakfast: true, snack: true }, // Día 4
+    {},                               // Día 5
+    {},                               // Día 6
+    { breakfast: true },              // Día 7
+    { lunch: true },                  // Día 8
+    {},                               // Día 9
+    { dinner: true },                 // Día 10
+    {},                               // Día 11
+    { snack: true },                  // Día 12
+    {},                               // Día 13
+    {},                               // Día 14
+    { breakfast: true, lunch: true }, // Día 15
+    {},                               // Día 16
+    { dinner: true },                 // Día 17
+    {},                               // Día 18
+    { snack: true },                  // Día 19
+    {},                               // Día 20
+    { breakfast: true },              // Día 21
+    {},                               // Día 22
+    { lunch: true, dinner: true },    // Día 23
+    {},                               // Día 24
+    { snack: true },                  // Día 25
+    {},                               // Día 26
+    {},                               // Día 27
+  ]);
 
-  const handleDelete = () => {
-    console.log("[v0] Eliminar menú")
-  }
+  const handleDelete = () => console.log("[v0] Eliminar menú");
+  const handleAdd = () => console.log("[v0] Agregar comida al día");
 
-  const handleAdd = () => {
-    console.log("[v0] Agregar comida al día")
-  }
+  const handleCellPress = (day, col) => {
+    const cellKey = `${day}-${col}`;
+    setSelectedCell(cellKey);
+    setModalVisible(true);
+  };
 
-  const handleEmojiPress = (day, col, emojiIndex) => {
-    const cellKey = `${day}-${col}`
-    const currentState = cellStates[cellKey] || [false, false, false, false]
-    const newState = [...currentState]
-    newState[emojiIndex] = !newState[emojiIndex]
-
-    setCellStates({
-      ...cellStates,
-      [cellKey]: newState,
-    })
-  }
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedCell(null);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => console.log("[v0] Volver")}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Feather name="arrow-left" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{menuName}</Text>
@@ -52,98 +90,105 @@ export default function ViewMenuScreen({ navigation, route }) {
         </View>
       </View>
 
+      {/* Tags */}
       <View style={styles.tagsContainer}>
         <View style={[styles.tag, styles.tagGreen]}>
-          <Text style={styles.tagText}>$ 200/día</Text>
+          <Text style={[styles.tagText, styles.tagTextGreen]}>$ 200/día</Text>
         </View>
         <View style={[styles.tag, styles.tagOrange]}>
-          <Text style={styles.tagText}>1500 cal/día</Text>
+          <Text style={[styles.tagText, styles.tagTextOrange]}>
+            1500 cal/día
+          </Text>
         </View>
         <View style={[styles.tag, styles.tagBlue]}>
-          <Text style={styles.tagText}>Mensual</Text>
+          <Text style={[styles.tagText, styles.tagTextBlue]}>Mensual</Text>
         </View>
       </View>
 
+      {/* Tabla */}
       <ScrollView style={styles.content} horizontal={false}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.table}>
-            {/* Header row con columnas */}
-            <View style={styles.headerRow}>
-              <View style={styles.dayHeaderCell} />
-              {[1, 2, 3, 4, 5].map((col) => (
-                <View key={col} style={styles.columnHeaderCell}>
-                  <Text style={styles.columnHeaderText}>Col {col}</Text>
-                </View>
-              ))}
-            </View>
-
-            {/* Filas de días */}
-            {days.map((day) => (
+            {days.map((day, dayIndex) => (
               <View key={day} style={styles.tableRow}>
                 <View style={styles.dayCell}>
                   <Text style={styles.dayText}>{day}</Text>
                 </View>
 
-                {/* 5 columnas por cada día */}
-                {[0, 1, 2, 3, 4].map((col) => {
-                  const cellKey = `${day}-${col}`
-                  const cellState = cellStates[cellKey] || [false, false, false, false]
+                {/* 4 columnas por día */}
+                {[0, 1, 2, 3].map((col) => {
+                  // Calculamos el índice real del día en menuData
+                  const dataIndex = dayIndex + col * 7;
+                  const data = menuData[dataIndex] || {};
 
                   return (
-                    <View key={col} style={styles.gridCell}>
+                    <TouchableOpacity
+                      key={col}
+                      style={styles.gridCell}
+                      onPress={() => handleCellPress(day, col)}
+                      activeOpacity={0.6}
+                    >
                       <View style={styles.emojiContainer}>
                         {emojis.map((emoji, index) => (
-                          <TouchableOpacity
+                          <Text
                             key={index}
-                            style={styles.emojiButton}
-                            onPress={() => handleEmojiPress(day, col, index)}
+                            style={[
+                              styles.emoji,
+                              data[mealKeys[index]]
+                                ? styles.emojiActive
+                                : styles.emojiInactive,
+                            ]}
                           >
-                            <Text style={[styles.emoji, cellState[index] && styles.emojiActive]}>{emoji}</Text>
-                          </TouchableOpacity>
+                            {emoji}
+                          </Text>
                         ))}
                       </View>
-                    </View>
-                  )
+                    </TouchableOpacity>
+                  );
                 })}
               </View>
             ))}
           </View>
         </ScrollView>
       </ScrollView>
+
+      {/* Modal */}
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={closeModal}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Detalle de la celda</Text>
+            <Text style={styles.modalText}>
+              Celda seleccionada: {selectedCell}
+            </Text>
+            <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFF",
-  },
+  container: { flex: 1, backgroundColor: "#FFF" },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderBottomWidth: 1,
     borderBottomColor: "#EEE",
   },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    flex: 1,
-    marginLeft: 12,
-  },
-  headerActions: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  iconButton: {
-    padding: 8,
-  },
+  backButton: { padding: 8 },
+  headerTitle: { fontSize: 18, fontWeight: "600", flex: 1, marginLeft: 12 },
+  headerActions: { flexDirection: "row", gap: 8 },
+  iconButton: { padding: 8 },
   tagsContainer: {
     flexDirection: "row",
     paddingHorizontal: 16,
@@ -151,102 +196,57 @@ const styles = StyleSheet.create({
     gap: 8,
     borderBottomWidth: 1,
     borderBottomColor: "#EEE",
+    flexWrap: "wrap",
   },
-  tag: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  tagGreen: {
-    backgroundColor: "#E8F5E9",
-  },
-  tagOrange: {
-    backgroundColor: "#FFF3E0",
-  },
-  tagBlue: {
-    backgroundColor: "#E3F2FD",
-  },
-  tagText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#333",
-  },
-  content: {
-    flex: 1,
-  },
-  table: {
-    paddingBottom: 20,
-  },
-  headerRow: {
-    flexDirection: "row",
-    borderBottomWidth: 2,
-    borderBottomColor: "#DDD",
-    backgroundColor: "#F8F8F8",
-  },
-  dayHeaderCell: {
-    width: 70,
-    borderRightWidth: 1,
-    borderRightColor: "#DDD",
-  },
-  columnHeaderCell: {
-    width: 100,
-    padding: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRightWidth: 1,
-    borderRightColor: "#DDD",
-  },
-  columnHeaderText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#666",
-  },
-  tableRow: {
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderBottomColor: "#EEE",
-  },
+  tag: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, marginRight: 8, marginBottom: 4 },
+  tagGreen: { backgroundColor: "#E8F5E9" },
+  tagOrange: { backgroundColor: "#FFF3E0" },
+  tagBlue: { backgroundColor: "#E3F2FD" },
+  tagText: { fontSize: 12, fontWeight: "500" },
+  tagTextGreen: { color: "#4CAF50" },
+  tagTextOrange: { color: "#FF9800" },
+  tagTextBlue: { color: "#2196F3" },
+  content: { flex: 1 },
+  table: { paddingBottom: 20 },
+  tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#EEE" },
   dayCell: {
-    width: 70,
+    width: 40,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: 20,
     borderRightWidth: 1,
     borderRightColor: "#DDD",
     backgroundColor: "#FAFAFA",
   },
-  dayText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#333",
-  },
+  dayText: { fontSize: 16, fontWeight: "700", color: "#333" },
   gridCell: {
-    width: 100,
-    minHeight: 80,
+    width: 95,
+    minHeight: 95,
     padding: 8,
     justifyContent: "center",
     alignItems: "center",
     borderRightWidth: 1,
     borderRightColor: "#EEE",
   },
-  emojiContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 4,
-    justifyContent: "center",
+  emojiContainer: { flexDirection: "row", flexWrap: "wrap", gap: 6, justifyContent: "center", alignItems: "center" },
+  emoji: { fontSize: 20 },
+  emojiActive: { opacity: 1 },             // emojis activos se ven natural
+  emojiInactive: { color: "#000", opacity: 0.3 }, // emojis inactivos blanco y negro
+  modalOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.4)", justifyContent: "center", alignItems: "center" },
+  modalContent: {
+    backgroundColor: "#FFF",
+    padding: 24,
+    borderRadius: 16,
+    width: "80%",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
   },
-  emojiButton: {
-    width: 36,
-    height: 36,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emoji: {
-    fontSize: 20,
-    opacity: 0.3,
-  },
-  emojiActive: {
-    opacity: 1,
-  },
-})
+  modalTitle: { fontSize: 18, fontWeight: "700", marginBottom: 8 },
+  modalText: { fontSize: 14, color: "#555", marginBottom: 16 },
+  closeButton: { backgroundColor: "#2196F3", paddingHorizontal: 20, paddingVertical: 10, borderRadius: 8 },
+  closeButtonText: { color: "#FFF", fontWeight: "600" },
+});
